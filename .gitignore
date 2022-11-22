@@ -19,5 +19,5 @@ Echidna
 *.jpg
 *.h
 
-# 
+# TODO: Remove this once the project matures
 src/wakasagihime/*
