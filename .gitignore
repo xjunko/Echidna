@@ -12,3 +12,9 @@ echidna
 .idea/
 .vscode/
 *.iml
+
+# Project files
+Echidna
+*.png
+*.jpg
+*.h
