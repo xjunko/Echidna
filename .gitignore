@@ -24,6 +24,9 @@ assets/*
 
 # TODO: Remove this once the project has enough stuff to show off.
 src/wakasagihime/*
+src/beatrice/main.v
+src/main.v
+
 
 # TODO: Remove this once i solved the bass sharing issues
 src/beatrice/audio/bass.vv
