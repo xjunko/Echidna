@@ -7,11 +7,9 @@ import gg
 // }
 
 pub interface IWindow {
-	mut:
-		args StartWindowArgument
-		ctx &gg.Context
-
-	// FNs
+mut:
+	args StartWindowArgument
+	ctx &gg.Context // FNs
 	init(voidptr)
 	update(f64)
 	draw(voidptr)

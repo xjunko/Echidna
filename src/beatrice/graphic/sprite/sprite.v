@@ -1,53 +1,34 @@
 module sprite
 
-import gg
-
-import beatrice.component.object
-
-import beatrice.math.vector
-
-
-// TODO: currently this is just a bootleg version of gg's `Image` struct
-pub interface ITexture {
-	mut:
-		id int
-		width int
-		height int
-}
+import src.beatrice.component.object
+import src.beatrice.math.vector
+import src.beatrice.graphic.backend
+import src.beatrice.graphic.texture
 
 pub struct Sprite {
 	object.GameObject
+pub mut:
+	textures []texture.ITexture
+	origin   vector.Origin = vector.centre
 
-	pub mut:
-		textures []ITexture
-		origin   vector.Origin
+	always_visible bool
 }
 
-pub fn (mut sprite Sprite) draw(ctx &gg.Context) {
-	mut texture := unsafe { &sprite.textures[0] }
+pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
+	size := sprite.size
+		.scale(arg.scale)
 
-	if mut texture is gg.Image {
-		size := sprite.size
-			.scale(1.500000000000001)
+	pos := sprite.position
+		.scale(arg.scale)
+		.sub(sprite.origin.Vector2.multiply(size))
+		.add(arg.offset)
 
-		pos := sprite.position
-			.scale(1.500000000000001)
-			.sub(sprite.origin.Vector2.multiply(size))
-			.add(vector.Vector2<f64>{159.99999999999972, -2.8421709430404007e-13})
-
-		ctx.draw_image_with_config(gg.DrawImageConfig{
-			img: texture,
-			img_id: texture.id,
-			img_rect: gg.Rect{
-				x: f32(pos.x),
-				y: f32(pos.y),
-				width: f32(size.x),
-				height: f32(size.y)
-			},
-			color: gg.Color{255, 255, 255, u8(sprite.color.a)}
-		})
-	}
-	
+	arg.backend.draw_image_with_config(
+		texture: sprite.textures[0]
+		position: pos
+		size: size
+		color: sprite.color
+	)
 }
 
 // Sprite specific reset

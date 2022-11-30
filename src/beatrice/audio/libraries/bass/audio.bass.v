@@ -1,17 +1,17 @@
 module bass
 
 pub const (
-	global = &GlobalMixer{}
+	global         = &GlobalMixer{}
 	todo_offscreen = false // TODO: Make this configurable
 )
 
 pub struct GlobalMixer {
-	pub mut:
-		master C.HSTREAM
+pub mut:
+	master C.HSTREAM
 }
 
 // initialize_bass sets up the `BASS` stuff
-// note that this function is "fine-tuned" for rhythm game and 
+// note that this function is "fine-tuned" for rhythm game and
 // you might not want that.
 pub fn initialize_bass() {
 	playback_buffer_length := int(100)
@@ -31,7 +31,7 @@ pub fn initialize_bass() {
 	mut mixer_flags := C.BASS_MIXER_NONSTOP
 
 	// Offscreen
-	if todo_offscreen {
+	if bass.todo_offscreen {
 		println('[Audio] Passing offscreen flags for BASS!')
 
 		device_id = int(0)
@@ -52,10 +52,9 @@ pub fn initialize_bass() {
 		// Point global to that mixer
 		// this is cursed
 		unsafe {
-			mut g_mixer := global
+			mut g_mixer := bass.global
 			g_mixer.master = master_mixer
 		}
-
 	} else {
 		println('[Audio] Failed to start BASS!')
 	}

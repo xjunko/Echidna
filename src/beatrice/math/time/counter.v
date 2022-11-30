@@ -1,17 +1,16 @@
 module time
 
-import time as timelib 
+import time as timelib
 
 pub struct TimeCounter {
-	mut:
-		start_time f64
-		last_time f64
-
-	pub mut:
-		delta f64
-		time  f64
-		fps   f64
-		speed f64 = 1.0
+mut:
+	start_time f64
+	last_time  f64
+pub mut:
+	delta f64
+	time  f64
+	fps   f64
+	speed f64 = 1.0
 }
 
 pub fn (mut t TimeCounter) reset() {
@@ -24,7 +23,7 @@ pub fn (mut t TimeCounter) reset() {
 
 pub fn (mut t TimeCounter) tick() f64 {
 	now := timelib.ticks()
-	
+
 	// Normal timer, use system timer.
 	t.delta = now - t.last_time
 	t.time = (now - t.start_time) * t.speed

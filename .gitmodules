@@ -1,0 +1,3 @@
+[submodule "src/beatrice/audio/libraries/miniaudio"]
+	path = src/beatrice/audio/libraries/miniaudio
+	url = https://github.com/xjunko/miniaudio
