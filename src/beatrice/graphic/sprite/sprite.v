@@ -29,6 +29,19 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 		size: size
 		color: sprite.color
 	)
+
+	// Debug
+	$if sprite_debug ? {
+		// ???? what
+		println('========')
+		println('Drawing image with these attributes: ')
+		println('Pos: ${pos.x} | ${pos.y}')
+		println('Size: ${size.x} | ${size.y}')
+		println('Color: ${sprite.color}')
+		println('=============')
+
+		arg.backend.draw_text(pos.x, pos.y, 'Sprite{ position: [${pos.x:.2}, ${pos.y:.2}] | always_visible: ${sprite.always_visible} | Textures: ${sprite.textures.len} }')
+	}
 }
 
 // Sprite specific reset
