@@ -47,7 +47,7 @@ pub fn (mut manager Manager) update_experimental(time f64) {
 	for i := 0; i < manager.queue.len; i++ {
 		mut c := unsafe { manager.queue[i] }
 
-		if time < c.time.start {
+		if time < c.time.start && !c.always_visible {
 			break
 		}
 
@@ -72,7 +72,7 @@ pub fn (mut manager Manager) update_experimental(time f64) {
 
 		c.update(time)
 
-		if time >= c.time.end {
+		if time >= c.time.end && !c.always_visible {
 			arrays.copy(mut manager.processed[i..], manager.processed[i + 1..])
 			manager.processed = manager.processed[..manager.processed.len - 1]
 
@@ -96,10 +96,12 @@ pub fn (mut manager Manager) draw(arg backend.DrawConfig) {
 		}
 	}
 
-	arg.backend.draw_text(20, 50, 'Manager: ${draw_count} drawing', gx.TextCfg{
-		color: gx.white
-		size: 30
-	})
+	$if sprite_debug ? {
+		arg.backend.draw_text(20, 50, 'Manager: ${draw_count} drawing', gx.TextCfg{
+			color: gx.white
+			size: 30
+		})
+	}
 }
 
 pub fn (mut manager Manager) draw_experimental(arg backend.DrawConfig) {
@@ -107,10 +109,12 @@ pub fn (mut manager Manager) draw_experimental(arg backend.DrawConfig) {
 		manager.processed[i].draw(arg)
 	}
 
-	arg.backend.draw_text(20, 50, 'Manager: ${manager.processed.len} drawing', gx.TextCfg{
-		color: gx.white
-		size: 30
-	})
+	$if sprite_debug ? {
+		arg.backend.draw_text(20, 50, 'Manager: ${manager.processed.len} drawing', gx.TextCfg{
+			color: gx.white
+			size: 30
+		})
+	}
 }
 
 // Factory
