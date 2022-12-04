@@ -62,14 +62,16 @@ pub fn (mut button Button) draw(arg backend.DrawConfig) {
 		.add(arg.offset)
 
 	// Background
-	arg.backend.draw_rect_filled(f32(position.x), f32(position.y), f32(size.x), f32(size.y),
-		button.background_color)
+	arg.backend.draw_rect_filled(position.x, position.y, size.x, size.y, button.background_color)
 
 	// Outline
-	arg.backend.draw_rect_empty(f32(position.x), f32(position.y), f32(size.x), f32(size.y),
-		button.border_color)
+	arg.backend.draw_rect_empty(position.x, position.y, size.x, size.y, button.border_color)
 
 	// Text
-	arg.backend.draw_text(int(button.position.x), int(button.position.y - 20 / 2), button.text,
-		gx.TextCfg{ align: .center, color: gx.white, size: 20 })
+	arg.backend.draw_text(int(position.x + size.x / 2.0), int(position.y + size.y / 2.0 - 20 / 2),
+		button.text, gx.TextCfg{
+		align: .center
+		color: gx.white
+		size: 20
+	})
 }
