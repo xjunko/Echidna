@@ -17,17 +17,17 @@ a framework-engine-amalgamations-of-sorts for average FireRedz's and the likes.
 * [/src/beatrice/graphic/sprite/sprite.v](/src/beatrice/graphic/sprite/sprite.v)
 
 
-### Flag: `demo_kyu_kurarin` <br/>
+### Flag: `demo_kyu_kurarin [Private]` <br/>
 ------
 * [/src/main.v](/src/main.v)
 
 
-### Flag: `demo_ui` <br/>
+### Flag: `demo_ui [Private]` <br/>
 ------
 * [/src/main.v](/src/main.v)
 
 
-### Flag: `demo_osu` <br/>
+### Flag: `demo_osu [Private]` <br/>
 ------
 * [/src/main.v](/src/main.v)
 
