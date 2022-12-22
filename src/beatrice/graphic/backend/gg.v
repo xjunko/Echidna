@@ -9,6 +9,7 @@ pub const (
 	i_am_being_used = 420
 )
 
+[heap]
 pub struct GGBackend {
 	BaseBackend
 mut:
