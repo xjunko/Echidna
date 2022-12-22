@@ -57,11 +57,6 @@ pub fn (mut window CommonWindow) draw(_ voidptr) {
 	window.backend.end()
 }
 
-// Events
-pub fn (mut window CommonWindow) on_click(x f32, y f32, button gg.MouseButton, _ voidptr) {}
-
-pub fn (mut window CommonWindow) on_unclick(x f32, y f32, button gg.MouseButton, _ voidptr) {}
-
 pub fn (mut window CommonWindow) start(args StartWindowArgument) {
 	window.args = args
 
