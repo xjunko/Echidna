@@ -13,6 +13,8 @@ pub enum BackendType {
 }
 
 // Interface
+
+[heap]
 pub interface IBackend {
 	// FNs that doesnt need to be mutable
 	draw_rect_filled(f64, f64, f64, f64, object.GameObjectColor[f64])
@@ -28,6 +30,7 @@ mut:
 }
 
 // Base Struct
+[heap]
 pub struct BaseBackend {
 mut:
 	typ BackendType = .@none
