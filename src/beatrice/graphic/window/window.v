@@ -7,6 +7,8 @@ import src.beatrice.graphic.backend
 import src.beatrice.graphic.sprite
 import src.beatrice.component.user_interface
 import src.beatrice.component.object
+import src.beatrice.graphic.window.input
+import src.beatrice.math.vector
 
 const (
 	used_import = backend.i_am_being_used
@@ -22,9 +24,6 @@ pub:
 	// ez
 	init_fn  gg.FNCb
 	frame_fn gg.FNCb
-
-	click_fn   gg.FNClick
-	unclick_fn gg.FNUnClick
 }
 
 [heap]
@@ -32,8 +31,9 @@ pub struct CommonWindow {
 mut:
 	args StartWindowArgument
 pub mut:
-	backend &backend.GGBackend = unsafe { nil }
-	mutex   &sync.Mutex        = sync.new_mutex()
+	backend &backend.GGBackend   = unsafe { nil }
+	input   &input.InputListener = &input.InputListener{}
+	mutex   &sync.Mutex = sync.new_mutex()
 	// Drawables
 	sprite_manager &sprite.Manager = sprite.new_manager()
 	ui_manager     &user_interface.Manager = user_interface.new_manager()
@@ -71,11 +71,16 @@ pub fn (mut window CommonWindow) start(args StartWindowArgument) {
 		height: args.height
 		user_data: window
 		// FNs
-		// God awful hack
+		// TODO: fix this, this is awful
 		init_fn: [window.init, args.init_fn][int(!isnil(args.init_fn))]
 		frame_fn: [window.draw, args.frame_fn][int(!isnil(args.frame_fn))]
-		click_fn: [window.on_click, args.click_fn][int(!isnil(args.click_fn))]
-		unclick_fn: [window.on_unclick, args.unclick_fn][int(!isnil(args.unclick_fn))]
+		// Inputs
+		click_fn: fn (x f32, y f32, button gg.MouseButton, mut window CommonWindow) {
+			window.input.mouse.trigger(.click, .left, vector.Vector2[f64]{ x: f64(x), y: f64(y) })
+		}
+		unclick_fn: fn (x f32, y f32, button gg.MouseButton, mut window CommonWindow) {
+			window.input.mouse.trigger(.unclick, .left, vector.Vector2[f64]{ x: f64(x), y: f64(y) })
+		}
 	)
 
 	window.backend = &backend.GGBackend{
