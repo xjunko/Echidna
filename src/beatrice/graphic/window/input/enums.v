@@ -4,6 +4,7 @@ pub enum InputState {
 	nothing
 	mouse_click
 	mouse_unclick
+	mouse_move
 	key_click
 	key_unclick
 }
@@ -11,9 +12,10 @@ pub enum InputState {
 pub enum ButtonType {
 	invalid = 0
 	// Mouse
-	mouse_left = 5
-	mouse_middle = 6
-	mouse_right = 7
+	mouse_left = 1 << 0
+	mouse_middle = 1 << 1
+	mouse_right = 1 << 2
+	mouse_move = 1 << 3
 	// Keyboard
 	space = 32
 	apostrophe = 39 //'
