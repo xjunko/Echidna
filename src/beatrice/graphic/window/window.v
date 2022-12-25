@@ -5,7 +5,6 @@ import gx
 import sync
 import src.beatrice.graphic.backend
 import src.beatrice.graphic.sprite
-import src.beatrice.component.user_interface_naive
 import src.beatrice.component.object
 import src.beatrice.graphic.window.input
 import src.beatrice.math.vector
@@ -36,7 +35,6 @@ pub mut:
 	mutex   &sync.Mutex = sync.new_mutex()
 	// Drawables
 	sprite_manager &sprite.Manager = sprite.new_manager()
-	ui_manager     &user_interface_naive.Manager = user_interface_naive.new_manager()
 }
 
 pub fn (mut window CommonWindow) init(_ voidptr) {}
@@ -78,6 +76,12 @@ pub fn (mut window CommonWindow) start(args StartWindowArgument) {
 		}
 		unclick_fn: fn (x f32, y f32, button gg.MouseButton, mut window CommonWindow) {
 			window.input.mouse.trigger(.mouse_unclick, .mouse_left, vector.Vector2[f64]{
+				x: f64(x)
+				y: f64(y)
+			})
+		}
+		move_fn: fn (x f32, y f32, mut window CommonWindow) {
+			window.input.mouse.trigger(.mouse_move, .mouse_move, vector.Vector2[f64]{
 				x: f64(x)
 				y: f64(y)
 			})
