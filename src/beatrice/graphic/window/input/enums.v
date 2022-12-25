@@ -1,5 +1,13 @@
 module input
 
+pub enum InputState {
+	nothing
+	mouse_click
+	mouse_unclick
+	key_click
+	key_unclick
+}
+
 pub enum ButtonType {
 	invalid = 0
 	// Mouse
@@ -127,11 +135,4 @@ pub enum ButtonType {
 	right_alt = 346
 	right_super = 347
 	menu = 348
-}
-
-pub enum InputState {
-	mouse_click
-	mouse_unclick
-	key_click
-	key_unclick
 }

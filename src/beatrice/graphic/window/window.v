@@ -5,7 +5,7 @@ import gx
 import sync
 import src.beatrice.graphic.backend
 import src.beatrice.graphic.sprite
-import src.beatrice.component.user_interface
+import src.beatrice.component.user_interface_naive
 import src.beatrice.component.object
 import src.beatrice.graphic.window.input
 import src.beatrice.math.vector
@@ -36,7 +36,7 @@ pub mut:
 	mutex   &sync.Mutex = sync.new_mutex()
 	// Drawables
 	sprite_manager &sprite.Manager = sprite.new_manager()
-	ui_manager     &user_interface.Manager = user_interface.new_manager()
+	ui_manager     &user_interface_naive.Manager = user_interface_naive.new_manager()
 }
 
 pub fn (mut window CommonWindow) init(_ voidptr) {}
