@@ -27,26 +27,6 @@ pub mut:
 	ctx     C.mu_Context
 }
 
-pub fn (mut ui UIManager) text_width(_ microui.Font, str &char, len int) int {
-	mut l_backend := unsafe { &ui.backend }
-
-	if mut l_backend is backend.GGBackend {
-		return l_backend.ctx.text_width(unsafe { cstring_to_vstring(str) })
-	}
-
-	return 1 // TODO: handle this
-}
-
-pub fn (mut ui UIManager) text_height(_ microui.Font) int {
-	mut l_backend := unsafe { &ui.backend }
-
-	if mut l_backend is backend.GGBackend {
-		return l_backend.ctx.text_height('joe mama')
-	}
-
-	return 1 // TODO: handle this
-}
-
 pub fn (mut ui UIManager) init() {
 	ui.ctx = unsafe { &C.mu_Context(C.malloc(sizeof(C.mu_Context))) } // amazing
 	C.mu_init(&ui.ctx)
@@ -61,6 +41,14 @@ pub fn (mut ui UIManager) begin() {
 
 pub fn (mut ui UIManager) end() {
 	C.mu_end(&ui.ctx)
+}
+
+pub fn (mut ui UIManager) text_width(_ microui.Font, str &char, len int) int {
+	return ui.backend.text_width(unsafe { cstring_to_vstring(str) })
+}
+
+pub fn (mut ui UIManager) text_height(_ microui.Font) int {
+	return ui.backend.text_height('joe mama')
 }
 
 pub fn (mut ui UIManager) draw() {
