@@ -9,6 +9,20 @@ module microui
 
 // types
 pub type Font = voidptr
+pub type ID = u32
+pub type Vec2 = C.mu_Vec2
+pub type Rect = C.mu_Rect
+pub type Color = C.mu_Color
+
+pub type TextCommand = C.mu_TextCommand
+pub type RectCommand = C.mu_RectCommand
+pub type IconCommand = C.mu_IconCommand
+pub type ClipCommand = C.mu_ClipCommand
+pub type Command = C.mu_Command
+
+pub type Style = C.mu_Style
+pub type Context = C.mu_Context
+pub type Container = C.mu_Container
 
 // commons
 [typedef]
@@ -41,49 +55,94 @@ pub mut:
 pub struct C.mu_TextCommand {
 pub mut:
 	str &char
-	pos C.mu_Vec2
+	pos Vec2
 }
 
 [typedef]
 pub struct C.mu_RectCommand {
 pub mut:
-	rect  C.mu_Rect
-	color C.mu_Color
+	rect  Rect
+	color Color
 }
 
 [typedef]
 pub struct C.mu_IconCommand {
 pub mut:
 	id    int
-	rect  C.mu_Rect
-	color C.mu_Color
+	rect  Rect
+	color Color
 }
 
 [typedef]
 pub struct C.mu_ClipCommand {
 pub mut:
-	rect C.mu_Rect
+	rect Rect
 }
 
 [typedef]
 pub struct C.mu_Command {
 pub mut:
 	@type int
-	text  C.mu_TextCommand
-	rect  C.mu_RectCommand
-	icon  C.mu_IconCommand
-	clip  C.mu_ClipCommand
+	text  TextCommand
+	rect  RectCommand
+	icon  IconCommand
+	clip  ClipCommand
 }
 
+const style_max_color_stupid_workaround_const_bullshit = 14 // enums.color_max
+
 // the boring stuff
+[typedef]
+pub struct C.mu_Style {
+pub mut:
+	font           Font
+	size           Vec2
+	padding        int
+	spacing        int
+	indent         int
+	title_height   int
+	scrollbar_size int
+	thumb_size     int
+	colors         [style_max_color_stupid_workaround_const_bullshit]Color
+}
+
 [typedef]
 pub struct C.mu_Context {
 pub mut:
 	// callbacks
 	text_width  fn (Font, &char, int) int
 	text_height fn (Font) int
-	// microui's assert will fail without this.
-	frame int
+	// core states
+	_style          Style
+	style           Style
+	hover           ID
+	focus           ID
+	last_id         ID
+	last_rect       Rect
+	last_zindex     int
+	updated_focus   int
+	frame           int
+	hover_root      Container
+	next_hover_root Container
+	scroll_target   Container
+	number_edit_buf char
+	number_edit     ID
+	// stacks
+	command_list    []Command
+	root_list       []Container
+	container_stack []Container
+	clip_stack      []Rect
+	id_stack        []ID
+	// input state
+	mouse_pos      Vec2
+	last_mouse_pos Vec2
+	mouse_delta    Vec2
+	scroll_delta   Vec2
+	mouse_down     int
+	mouse_pressed  int
+	key_down       int
+	key_pressed    int
+	input_text     [32]char
 }
 
 [typedef]
