@@ -21,6 +21,8 @@ pub interface IBackend {
 	draw_rect_empty(f64, f64, f64, f64, object.GameObjectColor[f64])
 	draw_text(f64, f64, string, gx.TextCfg)
 	draw_image_with_config(ImageDrawConfig)
+	text_width(string) int
+	text_height(string) int
 mut:
 	typ BackendType
 	begin()
@@ -53,6 +55,16 @@ pub fn (base_backend &BaseBackend) draw_rect_filled(x f64, y f64, width f64, hei
 pub fn (base_backend &BaseBackend) draw_rect_empty(x f64, y f64, width f64, height f64, color object.GameObjectColor[f64]) {}
 
 pub fn (base_backend &BaseBackend) draw_text(x f64, y f64, text string, config gx.TextCfg) {}
+
+pub fn (base_backend &BaseBackend) text_width(text string) int {
+	println('[Warning] Unimplemented ${@METHOD}')
+	return -1
+}
+
+pub fn (base_backend &BaseBackend) text_height(text string) int {
+	println('[Warning] Unimplemented ${@METHOD}')
+	return -1
+}
 
 //
 // Configs

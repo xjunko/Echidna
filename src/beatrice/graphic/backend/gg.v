@@ -28,6 +28,15 @@ pub fn (mut gg_backend GGBackend) end() {
 	gg_backend.ctx.end()
 }
 
+// Utils
+pub fn (gg_backend &GGBackend) text_width(text string) int {
+	return gg_backend.ctx.text_width(text)
+}
+
+pub fn (gg_backend &GGBackend) text_height(text string) int {
+	return gg_backend.ctx.text_height(text)
+}
+
 // Draw
 pub fn (gg_backend &GGBackend) draw_rect_filled(x f64, y f64, width f64, height f64, color object.GameObjectColor[f64]) {
 	gg_backend.ctx.draw_rect_filled(f32(x), f32(y), f32(width), f32(height), gx.Color{u8(color.r), u8(color.g), u8(color.b), u8(color.a)})
