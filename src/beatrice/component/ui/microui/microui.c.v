@@ -54,8 +54,10 @@ pub mut:
 [typedef]
 pub struct C.mu_TextCommand {
 pub mut:
-	str &char
-	pos Vec2
+	font  Font
+	color Color
+	str   &char
+	pos   Vec2
 }
 
 [typedef]
@@ -89,8 +91,6 @@ pub mut:
 	clip  ClipCommand
 }
 
-const style_max_color_stupid_workaround_const_bullshit = 14 // enums.color_max
-
 // the boring stuff
 [typedef]
 pub struct C.mu_Style {
@@ -114,7 +114,7 @@ pub mut:
 	text_height fn (Font) int
 	// core states
 	_style          Style
-	style           Style
+	style           &Style
 	hover           ID
 	focus           ID
 	last_id         ID
