@@ -3,6 +3,7 @@ module ui
 import gx
 import src.beatrice.component.object
 import src.beatrice.component.ui.microui
+import src.beatrice.component.ui.microui.enums
 import src.beatrice.graphic.backend
 import sokol.sgl
 
@@ -58,24 +59,25 @@ pub fn (mut ui UIManager) draw() {
 
 	for C.mu_next_command(&ui.ctx, &cmd) {
 		match cmd.@type {
-			C.MU_COMMAND_TEXT {
+			enums.command_text {
 				ui.backend.draw_text(f64(cmd.text.pos.x), f64(cmd.text.pos.y), unsafe { cstring_to_vstring(cmd.text.str) },
 					gx.TextCfg{
 					color: gx.white
 				})
 			}
-			C.MU_COMMAND_RECT {
+			enums.command_rect {
 				ui.backend.draw_rect_filled(f64(cmd.rect.rect.x), f64(cmd.rect.rect.y),
 					f64(cmd.rect.rect.w), f64(cmd.rect.rect.h), object.GameObjectColor[f64]{f64(cmd.rect.color.r), f64(cmd.rect.color.g), f64(cmd.rect.color.b), f64(cmd.rect.color.a)})
 			}
-			C.MU_COMMAND_ICON {
+			enums.command_icon {
 				// FIXME: fix this
 				x := cmd.rect.rect.x + (cmd.rect.rect.w - 16) / 2
 				y := cmd.rect.rect.y + (cmd.rect.rect.h - 16) / 2
 
 				ui.backend.draw_rect_filled(f64(x), f64(y), f64(16), f64(16), object.GameObjectColor[f64]{f64(cmd.icon.color.r), f64(cmd.icon.color.g), f64(cmd.icon.color.b), f64(cmd.icon.color.a)})
 			}
-			C.MU_COMMAND_CLIP {
+			enums.command_clip {
+				// This only works with gg-backend
 				sgl.scissor_rect(cmd.clip.rect.x, cmd.clip.rect.y, cmd.clip.rect.w, cmd.clip.rect.h,
 					true)
 			}
