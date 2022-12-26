@@ -1,26 +1,14 @@
 module ui
 
 import gx
+import sokol.sgl
+
 import src.beatrice.component.object
 import src.beatrice.component.ui.microui
 import src.beatrice.component.ui.microui.enums
 import src.beatrice.graphic.backend
-import sokol.sgl
 
 //
-// HACK: refer to UIManager's draw
-[typedef]
-pub struct C.mu_Command {
-pub mut:
-	@type int
-	text  C.mu_TextCommand
-	rect  C.mu_RectCommand
-	icon  C.mu_IconCommand
-	clip  C.mu_ClipCommand
-}
-
-//
-
 [heap]
 pub struct UIManager {
 pub mut:
@@ -56,9 +44,7 @@ pub fn (mut ui UIManager) text_height(_ microui.Font) int {
 }
 
 pub fn (mut ui UIManager) draw() {
-	// for whatever reason this is invalid if i didnt
-	// redeclare the thing... weird
-	cmd := &C.mu_Command(unsafe { nil })
+	cmd := &microui.Command(unsafe { nil })
 
 	for C.mu_next_command(&ui.ctx, &cmd) {
 		match cmd.@type {
