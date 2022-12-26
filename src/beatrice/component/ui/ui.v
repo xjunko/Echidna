@@ -2,15 +2,21 @@ module ui
 
 import gx
 import sokol.sgl
-
 import src.beatrice.component.object
 import src.beatrice.component.ui.microui
 import src.beatrice.component.ui.microui.enums
 import src.beatrice.graphic.backend
 
+pub struct UIConfig {
+pub mut:
+	no_icon bool = true
+}
+
 //
 [heap]
 pub struct UIManager {
+mut:
+	config UIConfig
 pub mut:
 	backend backend.IBackend
 	ctx     C.mu_Context
@@ -40,7 +46,7 @@ pub fn (mut ui UIManager) text_width(_ microui.Font, str &char, len int) int {
 }
 
 pub fn (mut ui UIManager) text_height(_ microui.Font) int {
-	return ui.backend.text_height('joe mama')
+	return ui.backend.text_height('joe mam')
 }
 
 pub fn (mut ui UIManager) draw() {
@@ -59,6 +65,10 @@ pub fn (mut ui UIManager) draw() {
 					f64(cmd.rect.rect.w), f64(cmd.rect.rect.h), object.GameObjectColor[f64]{f64(cmd.rect.color.r), f64(cmd.rect.color.g), f64(cmd.rect.color.b), f64(cmd.rect.color.a)})
 			}
 			enums.command_icon {
+				if ui.config.no_icon {
+					continue
+				}
+
 				// FIXME: fix this
 				x := cmd.rect.rect.x + (cmd.rect.rect.w - 16) / 2
 				y := cmd.rect.rect.y + (cmd.rect.rect.h - 16) / 2
@@ -72,19 +82,5 @@ pub fn (mut ui UIManager) draw() {
 			}
 			else {}
 		}
-	}
-}
-
-pub fn (mut ui UIManager) demo_ui() {
-	rect := C.mu_Rect{40, 40, 300, 450}
-
-	if C.mu_begin_window(&ui.ctx, "Echidna's UI".str, rect) {
-		if C.mu_header_ex(&ui.ctx, 'Info'.str, C.MU_OPT_EXPANDED) {
-			C.mu_layout_row(&ui.ctx, 2, [85, -1].data, 16)
-			C.mu_label(&ui.ctx, 'Message:'.str)
-			C.mu_label(&ui.ctx, 'Hello world!!'.str)
-		}
-
-		C.mu_end_window(&ui.ctx)
 	}
 }
