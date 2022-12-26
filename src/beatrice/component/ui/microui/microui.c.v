@@ -14,6 +14,7 @@ pub type Vec2 = C.mu_Vec2
 pub type Rect = C.mu_Rect
 pub type Color = C.mu_Color
 
+pub type BaseCommand = C.mu_BaseCommand
 pub type TextCommand = C.mu_TextCommand
 pub type RectCommand = C.mu_RectCommand
 pub type IconCommand = C.mu_IconCommand
@@ -52,8 +53,16 @@ pub mut:
 
 // commands
 [typedef]
+pub struct C.mu_BaseCommand {
+pub mut:
+	@type int
+	size  int
+}
+
+[typedef]
 pub struct C.mu_TextCommand {
 pub mut:
+	base  BaseCommand
 	font  Font
 	color Color
 	str   &char
@@ -63,6 +72,7 @@ pub mut:
 [typedef]
 pub struct C.mu_RectCommand {
 pub mut:
+	base  BaseCommand
 	rect  Rect
 	color Color
 }
@@ -70,6 +80,7 @@ pub mut:
 [typedef]
 pub struct C.mu_IconCommand {
 pub mut:
+	base  BaseCommand
 	id    int
 	rect  Rect
 	color Color
@@ -78,6 +89,7 @@ pub mut:
 [typedef]
 pub struct C.mu_ClipCommand {
 pub mut:
+	base BaseCommand
 	rect Rect
 }
 
@@ -85,6 +97,7 @@ pub mut:
 pub struct C.mu_Command {
 pub mut:
 	@type int
+	base  BaseCommand
 	text  TextCommand
 	rect  RectCommand
 	icon  IconCommand
