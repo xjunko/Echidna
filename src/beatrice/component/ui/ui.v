@@ -32,6 +32,9 @@ pub fn (mut ui UIManager) init() {
 	ui.ctx = unsafe { &C.mu_Context(C.malloc(sizeof(C.mu_Context))) } // amazing
 	C.mu_init(&ui.ctx)
 
+	ui.ctx._style = microui.default_style
+	ui.ctx.style = &ui.ctx._style
+
 	ui.ctx.text_width = ui.text_width
 	ui.ctx.text_height = ui.text_height
 }
@@ -62,7 +65,7 @@ pub fn (mut ui UIManager) draw() {
 			enums.command_text {
 				ui.backend.draw_text(f64(cmd.text.pos.x), f64(cmd.text.pos.y), unsafe { cstring_to_vstring(cmd.text.str) },
 					gx.TextCfg{
-					color: gx.white
+					color: gx.Color{cmd.text.color.r, cmd.text.color.g, cmd.text.color.b, cmd.text.color.a}
 				})
 			}
 			enums.command_rect {
