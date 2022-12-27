@@ -13,9 +13,9 @@ pub const (
 pub struct GGBackend {
 	BaseBackend
 mut:
-	typ   BackendType = .gg
 	cache map[string]gg.Image
 pub mut:
+	typ BackendType = .gg
 	ctx &gg.Context = unsafe { nil }
 }
 

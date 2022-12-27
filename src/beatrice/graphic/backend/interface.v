@@ -34,7 +34,7 @@ mut:
 // Base Struct
 [heap]
 pub struct BaseBackend {
-mut:
+pub mut:
 	typ BackendType = .@none
 }
 
