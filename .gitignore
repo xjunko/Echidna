@@ -18,8 +18,10 @@ find_all_flags
 Echidna
 *.png
 *.jpg
-*.h
 ext/*
+
+# bass specific headers
+bass*.h
 
 # Assets
 assets/*
