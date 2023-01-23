@@ -1,5 +1,8 @@
 module window
 
+// TODO: Fix this
+import sdl
+import sdl.ttf
 import gg // TODO: Configurable backend for graphics
 import gx
 import sync
@@ -30,7 +33,7 @@ pub struct CommonWindow {
 mut:
 	args StartWindowArgument
 pub mut:
-	backend &backend.GGBackend   = unsafe { nil }
+	backend &backend.IBackend    = unsafe { nil }
 	input   &input.InputListener = &input.InputListener{}
 	mutex   &sync.Mutex = sync.new_mutex()
 	// Drawables
@@ -55,9 +58,8 @@ pub fn (mut window CommonWindow) draw(_ voidptr) {
 	window.backend.end()
 }
 
-pub fn (mut window CommonWindow) start(args StartWindowArgument) {
-	window.args = args
-
+// TODO: Move this somewhere
+pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 	// Backend: GG
 	mut ctx := gg.new_context(
 		width: args.width
@@ -98,7 +100,89 @@ pub fn (mut window CommonWindow) start(args StartWindowArgument) {
 	window.backend = &backend.GGBackend{
 		ctx: ctx
 	}
-	window.backend.ctx.fps.show = true
 
-	window.backend.ctx.run()
+	// Run
+	ctx.fps.show = true
+	ctx.run()
+}
+
+pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
+	// Code boilerplate at its finest
+
+	sdl.init(sdl.init_everything)
+	ttf.init()
+
+	// sdl.gl_set_attribute(.context_flags, int(sdl.GLcontextFlag.forward_compatible_flag))
+	// sdl.gl_set_attribute(.context_profile_mask, int(sdl.GLprofile.core))
+	// sdl.gl_set_attribute(.context_major_version, 3)
+	// sdl.gl_set_attribute(.context_minor_version, 3)
+
+	// Window
+	sdl_window_flags := u32(0)
+	mut sdl_window := sdl.create_window('Echidna'.str, sdl.windowpos_undefined, sdl.windowpos_undefined,
+		args.width, args.height, sdl_window_flags)
+
+	if sdl_window == sdl.null {
+		error_msg := unsafe { cstring_to_vstring(sdl.get_error()) }
+		panic('Could not create SDL window, SDL says:\n${error_msg}')
+	}
+
+	// Renderer
+	mut sdl_renderer := sdl.create_renderer(sdl_window, -1, u32(sdl.RendererFlags.accelerated))
+
+	// Surface
+	mut sdl_surface := sdl.get_window_surface(sdl_window)
+
+	if sdl_surface == sdl.null {
+		error_msg := unsafe { cstring_to_vstring(sdl.get_error()) }
+		panic('Could not create SDL surface, SDL says:\n${error_msg}')
+	}
+
+	// Backend
+	window.backend = &backend.SDLBackend{
+		window: sdl_window
+		renderer: sdl_renderer
+		surface: sdl_surface
+	}
+
+	// Program Loop
+	init_callback := [window.init, args.init_fn][int(!isnil(args.init_fn))]
+	draw_callback := [window.draw, args.frame_fn][int(!isnil(args.frame_fn))]
+
+	// Init
+	init_callback(voidptr(&window.draw))
+
+	// Run
+	mut should_close := false
+
+	for {
+		evt := sdl.Event{}
+		for 0 < sdl.poll_event(&evt) {
+			match evt.@type {
+				.quit { should_close = true }
+				else {}
+			}
+		}
+		if should_close {
+			break
+		}
+
+		draw_callback(voidptr(&window.draw))
+	}
+
+	// sdl.destroy_renderer(renderer)
+	// sdl.destroy_window(window)
+	// sdl.quit()
+}
+
+pub fn (mut window CommonWindow) start(args StartWindowArgument) {
+	window.args = args
+
+	$if backend_gg ? {
+		window.start_gg(args)
+	} $else $if backend_sdl ? {
+		window.start_sdl(args)
+	} $else {
+		window.start_gg(args)
+	}
 }
