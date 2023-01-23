@@ -1,10 +1,10 @@
 module bass
 
-#flag -I @VMODROOT/src/beatrice/audio/libraries/bass/headers
+#flag -I @VMODROOT/beatrice/audio/libraries/bass/headers
 #include "bass.h"
 #include "bass_fx.h"
 #include "bassmix.h"
-#flag -Wl,-rpath=src/beatrice/audio/libraries/bass/dll,-L@VMODROOT/src/beatrice/audio/libraries/bass/dll -lbass -lbass_fx -lbassmix
+#flag -Wl,-rpath=src/beatrice/audio/libraries/bass/dll,-L@VMODROOT/beatrice/audio/libraries/bass/dll -lbass -lbass_fx -lbassmix
 
 // Important bits
 fn C.BASS_Init(int, int, int, int, int) int

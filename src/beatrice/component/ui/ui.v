@@ -2,10 +2,10 @@ module ui
 
 import gx
 import sokol.sgl
-import src.beatrice.component.object
-import src.beatrice.component.ui.microui
-import src.beatrice.component.ui.microui.enums
-import src.beatrice.graphic.backend
+import beatrice.component.object
+import beatrice.component.ui.microui
+import beatrice.component.ui.microui.enums
+import beatrice.graphic.backend
 
 pub struct UIConfig {
 pub mut:

@@ -1,7 +1,7 @@
 module ui
 
-import src.beatrice.graphic.window.input
-import src.beatrice.math.vector
+import beatrice.graphic.window.input
+import beatrice.math.vector
 
 // this part sucks so im just gonna split it into its own file
 pub fn (mut ui UIManager) on_click(button input.ButtonType, pos vector.Vector2[f64]) {

@@ -1,9 +1,9 @@
 module object
 
 import math
-import src.beatrice.math.vector
-import src.beatrice.math.time
-import src.beatrice.math.transform
+import beatrice.math.vector
+import beatrice.math.time
+import beatrice.math.transform
 
 pub struct GameObjectColor[T] {
 pub mut:

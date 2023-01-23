@@ -1,6 +1,6 @@
 module input
 
-import src.beatrice.math.vector
+import beatrice.math.vector
 
 pub type MouseCallback = fn (state InputState, button ButtonType, pos vector.Vector2[f64])
 

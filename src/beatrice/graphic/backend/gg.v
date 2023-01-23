@@ -2,8 +2,8 @@ module backend
 
 import gg
 import gx
-import src.beatrice.component.object
-import src.beatrice.graphic.texture
+import beatrice.component.object
+import beatrice.graphic.texture
 
 pub const (
 	i_am_being_used = 420

@@ -1,9 +1,9 @@
 module sprite
 
-import src.beatrice.component.object
-import src.beatrice.math.vector
-import src.beatrice.graphic.backend
-import src.beatrice.graphic.texture
+import beatrice.component.object
+import beatrice.math.vector
+import beatrice.graphic.backend
+import beatrice.graphic.texture
 
 pub struct Sprite {
 	object.GameObject

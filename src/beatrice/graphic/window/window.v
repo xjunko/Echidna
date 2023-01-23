@@ -3,11 +3,11 @@ module window
 import gg // TODO: Configurable backend for graphics
 import gx
 import sync
-import src.beatrice.graphic.backend
-import src.beatrice.graphic.sprite
-import src.beatrice.component.object
-import src.beatrice.graphic.window.input
-import src.beatrice.math.vector
+import beatrice.graphic.backend
+import beatrice.graphic.sprite
+import beatrice.component.object
+import beatrice.graphic.window.input
+import beatrice.math.vector
 
 const (
 	used_import = backend.i_am_being_used

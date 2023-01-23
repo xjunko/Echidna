@@ -1,9 +1,9 @@
 module backend
 
 import gx
-import src.beatrice.component.object
-import src.beatrice.graphic.texture
-import src.beatrice.math.vector
+import beatrice.component.object
+import beatrice.graphic.texture
+import beatrice.math.vector
 
 // Types
 pub enum BackendType {

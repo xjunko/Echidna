@@ -1,6 +1,6 @@
 module main
 
-import src.beatrice.graphic.window
+import beatrice.graphic.window
 
 pub struct Window {
 	window.CommonWindow

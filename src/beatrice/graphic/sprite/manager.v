@@ -2,7 +2,7 @@ module sprite
 
 import gx
 import arrays
-import src.beatrice.graphic.backend
+import beatrice.graphic.backend
 
 pub struct Manager {
 mut:

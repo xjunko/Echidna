@@ -1,6 +1,6 @@
 module audio
 
-import src.beatrice.audio.libraries.miniaudio
+import beatrice.audio.libraries.miniaudio
 
 // Backend
 [heap]

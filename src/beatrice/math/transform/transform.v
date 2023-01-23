@@ -1,8 +1,8 @@
 module transform
 
-import src.beatrice.math.time
-import src.beatrice.math.vector
-import src.beatrice.math.easing
+import beatrice.math.time
+import beatrice.math.vector
+import beatrice.math.easing
 
 pub enum TransformType {
 	move

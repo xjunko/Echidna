@@ -1,6 +1,6 @@
 module input
 
-import src.beatrice.math.vector
+import beatrice.math.vector
 
 pub struct Subcribable[T] {
 pub mut:

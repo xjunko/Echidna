@@ -1,7 +1,7 @@
 module ui
 
-import src.beatrice.component.ui.microui
-import src.beatrice.component.ui.microui.enums
+import beatrice.component.ui.microui
+import beatrice.component.ui.microui.enums
 
 pub fn (mut ui UIManager) demo_ui() {
 	ui.ctx.style.size.x = 75
