@@ -50,8 +50,7 @@ pub fn (sdl_backend &SDLBackend) draw_rect_empty(x f64, y f64, width f64, height
 }
 
 pub fn (sdl_backend &SDLBackend) draw_text(x f64, y f64, text string, config gx.TextCfg) {
-	font := ttf.open_font('/run/media/junko/2nd/Projects/Echidna/assets/font.ttf'.str,
-		int(config.size / 2))
+	font := ttf.open_font('assets/font.ttf'.str, int(config.size / 2))
 
 	// Get text size
 	w, h := 0, 0
