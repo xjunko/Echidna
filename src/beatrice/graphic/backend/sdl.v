@@ -1,17 +1,29 @@
 module backend
 
 import gx
+import math
 import sdl
 import sdl.ttf
 import sdl.image
 import beatrice.component.object
 import beatrice.graphic.texture
 
+const (
+	// humble amount of 1000fps
+	time_per_frame = 1000.0 / 1000.0
+)
+
 pub struct SDLBackend {
 	BaseBackend
 mut:
+	// Internal
 	cache map[string]&SDLTexture
-
+	// Render Timer
+	start u64
+	end   u64
+	fps   f64
+pub mut:
+	// Public
 	window   &sdl.Window   = unsafe { nil }
 	renderer &sdl.Renderer = unsafe { nil }
 	surface  &sdl.Surface  = unsafe { nil }
@@ -19,12 +31,32 @@ mut:
 }
 
 // OPs
-pub fn (sdl_backend &SDLBackend) begin() {
+pub fn (mut sdl_backend SDLBackend) begin() {
 	sdl.render_clear(sdl_backend.renderer)
+
+	sdl_backend.start = sdl.get_performance_counter()
 }
 
-pub fn (sdl_backend &SDLBackend) end() {
+pub fn (mut sdl_backend SDLBackend) end() {
+	// Render FPS
+	sdl_backend.draw_rect_filled(0, 0, 200, 40, object.GameObjectColor[f64]{0.0, 0.0, 0.0, 255.0})
+	sdl_backend.draw_text(5, 5, '${sdl_backend.fps:.0f}fps', gx.TextCfg{
+		size: 40
+		align: .left
+		color: gx.white
+	})
+
 	sdl.render_present(sdl_backend.renderer)
+
+	// FPS Counter
+	sdl_backend.end = sdl.get_performance_counter()
+
+	elapsed_time := f64(sdl_backend.end - sdl_backend.start) / f64(sdl.get_performance_frequency())
+
+	sdl_backend.fps = 1.0 / elapsed_time
+
+	// Limit the FPS
+	sdl.delay(u32(math.floor(backend.time_per_frame - elapsed_time)))
 }
 
 // Utils

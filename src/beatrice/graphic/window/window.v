@@ -167,6 +167,7 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 				else {}
 			}
 		}
+
 		if should_close {
 			break
 		}
