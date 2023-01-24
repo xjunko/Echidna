@@ -23,6 +23,7 @@ mut:
 	end   u64
 	fps   f64
 pub mut:
+	typ BackendType = .sdl
 	// Public
 	window   &sdl.Window   = unsafe { nil }
 	renderer &sdl.Renderer = unsafe { nil }
