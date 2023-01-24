@@ -175,9 +175,9 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 		draw_callback(voidptr(&window.draw))
 	}
 
-	// sdl.destroy_renderer(renderer)
-	// sdl.destroy_window(window)
-	// sdl.quit()
+	sdl.destroy_renderer(sdl_renderer)
+	sdl.destroy_window(sdl_window)
+	sdl.quit()
 }
 
 pub fn (mut window CommonWindow) start(args StartWindowArgument) {
