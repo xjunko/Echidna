@@ -15,6 +15,7 @@ mut:
 	window   &sdl.Window   = unsafe { nil }
 	renderer &sdl.Renderer = unsafe { nil }
 	surface  &sdl.Surface  = unsafe { nil }
+	font     &ttf.Font     = unsafe { nil }
 }
 
 // OPs
@@ -24,6 +25,23 @@ pub fn (sdl_backend &SDLBackend) begin() {
 
 pub fn (sdl_backend &SDLBackend) end() {
 	sdl.render_present(sdl_backend.renderer)
+}
+
+// Utils
+pub fn (sdl_backend &SDLBackend) get_text_size(text string) []int {
+	// Get text size
+	w, h := 0, 0
+	ttf.size_text(sdl_backend.font, text.str, &w, &h)
+
+	return [w, h]
+}
+
+pub fn (sdl_backend &SDLBackend) text_width(text string) int {
+	return sdl_backend.get_text_size(text)[0]
+}
+
+pub fn (sdl_backend &SDLBackend) text_height(text string) int {
+	return sdl_backend.get_text_size(text)[1]
 }
 
 // Draw

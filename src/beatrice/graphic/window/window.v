@@ -138,11 +138,15 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 		panic('Could not create SDL surface, SDL says:\n${error_msg}')
 	}
 
+	// Font
+	mut font := ttf.open_font('assets/font.ttf'.str, int(20 / 2)) // Follow GG's default font size
+
 	// Backend
 	window.backend = &backend.SDLBackend{
 		window: sdl_window
 		renderer: sdl_renderer
 		surface: sdl_surface
+		font: font
 	}
 
 	// Program Loop
