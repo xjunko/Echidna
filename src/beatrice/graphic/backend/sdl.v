@@ -75,9 +75,9 @@ pub fn (sdl_backend &SDLBackend) draw_text(x f64, y f64, text string, config gx.
 		panic('Could not create SDL font, SDL says:\n${error_msg}')
 	}
 
-	white := sdl.Color{255, 255, 255, 255}
+	font_color := sdl.Color{config.color.r, config.color.g, config.color.b, config.color.a}
 
-	surface_message := ttf.render_text_solid(font, text.str, white)
+	surface_message := ttf.render_text_blended(font, text.str, font_color)
 	message := sdl.create_texture_from_surface(sdl_backend.renderer, surface_message)
 
 	message_rect := sdl.Rect{int(pos_x), int(pos_y), surface_message.w, surface_message.h}
