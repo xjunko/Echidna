@@ -77,8 +77,3 @@ pub fn (gg_backend &GGBackend) draw_image_with_config(config ImageDrawConfig) {
 		})
 	}
 }
-
-// Init TODO
-pub fn init() {
-	println('[BACKEND] TODO')
-}
