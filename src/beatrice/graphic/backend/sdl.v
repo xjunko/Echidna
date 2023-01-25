@@ -17,7 +17,8 @@ pub struct SDLBackend {
 	BaseBackend
 mut:
 	// Internal
-	cache map[string]&SDLTexture
+	font_path string // maybe split this into english/japanese
+	cache     map[string]&SDLTexture
 	// Render Timer
 	start u64
 	end   u64
@@ -101,7 +102,7 @@ pub fn (sdl_backend &SDLBackend) draw_rect_empty(x f64, y f64, width f64, height
 }
 
 pub fn (sdl_backend &SDLBackend) draw_text(x f64, y f64, text string, config gx.TextCfg) {
-	font := ttf.open_font('assets/font.ttf'.str, int(config.size / 2))
+	font := ttf.open_font(sdl_backend.font_path.str, int(config.size / 2))
 
 	// Get text size
 	w, h := 0, 0

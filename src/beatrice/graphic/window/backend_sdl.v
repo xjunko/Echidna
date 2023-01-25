@@ -51,6 +51,7 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 		renderer: sdl_renderer
 		surface: sdl_surface
 		font: font
+		font_path: font_path
 	}
 
 	// Program Loop
