@@ -37,7 +37,7 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 	}
 
 	// Font
-	font_path := "assets/font/default.ttf"
+	mut font_path := 'assets/font/default.ttf'
 
 	$if font_japanese ? {
 		font_path = 'assets/font/japanese.ttf'
