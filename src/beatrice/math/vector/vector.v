@@ -45,3 +45,7 @@ pub fn (v Vector2[T]) clone() Vector2[T] {
 		...v
 	}
 }
+
+pub fn (v Vector2[T]) changed() bool {
+	return v.x != T(0.0) || v.y != T(0.0)
+}
