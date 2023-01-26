@@ -45,12 +45,38 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 }
 
 // Sprite specific reset
-pub fn (mut sprite Sprite) reset_size_based_on_texture() {
+[args; params]
+pub struct ExtraResizeArgument {
+pub mut:
+	keep_ratio bool
+	resize_to  vector.Vector2[f64]
+}
+
+pub fn (mut sprite Sprite) reset_size_based_on_texture(extra ExtraResizeArgument) {
 	mut texture := unsafe { &sprite.textures[0] }
+	texture_size := vector.Vector2[f64]{
+		x: f64(texture.width)
+		y: f64(texture.height)
+	}
 
-	sprite.texture_size.x = f64(texture.width)
-	sprite.texture_size.y = f64(texture.height)
+	if extra.resize_to.changed() {
+		// Replace size as is.
+		sprite.texture_size = extra.resize_to
+		sprite.size = extra.resize_to
 
-	sprite.size.x = sprite.texture_size.x
-	sprite.size.y = sprite.texture_size.y
+		// Replace size but keep ratio relative to texture's scale
+		if extra.keep_ratio {
+			ratio := extra.resize_to.x / texture_size.x
+
+			sprite.texture_size = texture_size.scale(ratio)
+			sprite.size = texture_size.scale(ratio)
+		}
+	} else {
+		// Default: Reset to sprite size
+		sprite.texture_size.x = f64(texture.width)
+		sprite.texture_size.y = f64(texture.height)
+
+		sprite.size.x = sprite.texture_size.x
+		sprite.size.y = sprite.texture_size.y
+	}
 }
