@@ -5,7 +5,9 @@ import beatrice.graphic.backend
 import beatrice.graphic.window.input
 import beatrice.math.vector
 
-// TODO: Move this somewhere
+// Hacks
+fn C._sapp_glx_swapinterval(int)
+
 pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 	mut font_path := 'assets/font/default.ttf'
 
@@ -13,15 +15,27 @@ pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 		font_path = 'assets/font/japanese.ttf'
 	}
 
+	// HACK: this is awful but there isnt a better way of expressing this
+	init_fn := [window.init, args.init_fn][int(!isnil(args.init_fn))]
+	init_temporary_hack := fn [init_fn, args] (mut ptr voidptr) {
+		init_fn(ptr) // lord 
+
+		if !args.vsync {
+			// Disable vsync
+			C._sapp_glx_swapinterval(0)
+		}
+	}
+
+	frame_fn := [window.draw, args.frame_fn][int(!isnil(args.frame_fn))]
+
 	// Backend: GG
 	mut ctx := gg.new_context(
 		width: args.width
 		height: args.height
 		user_data: window
 		// FNs
-		// TODO: fix this, this is awful
-		init_fn: [window.init, args.init_fn][int(!isnil(args.init_fn))]
-		frame_fn: [window.draw, args.frame_fn][int(!isnil(args.frame_fn))]
+		init_fn: init_temporary_hack
+		frame_fn: frame_fn
 		font_path: font_path
 		// Mouse
 		click_fn: fn (x f32, y f32, button gg.MouseButton, mut window CommonWindow) {
