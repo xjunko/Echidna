@@ -129,7 +129,7 @@ pub fn (sdl_backend &SDLBackend) draw_text(x f64, y f64, text string, config gx.
 
 	font_color := sdl.Color{config.color.r, config.color.g, config.color.b, config.color.a}
 
-	surface_message := ttf.render_text_blended(font, text.str, font_color)
+	surface_message := ttf.render_utf8_blended(font, text.str, font_color)
 	message := sdl.create_texture_from_surface(sdl_backend.renderer, surface_message)
 
 	message_rect := sdl.Rect{int(pos_x), int(pos_y), surface_message.w, surface_message.h}
