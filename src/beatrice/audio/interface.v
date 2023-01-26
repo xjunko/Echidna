@@ -11,10 +11,22 @@ mut:
 	typ AudioBackendType
 	init()
 	load_audio(string) IAudio
+	load_sample(string) ISample
 	set_volume(f64)
 }
 
 pub interface IAudio {
+mut:
+	id int // This does nothing
+	playing bool
+	play()
+	pause()
+	resume()
+	set_volume(f64)
+}
+
+// It's like `IAudio` but spam-able.
+pub interface ISample {
 mut:
 	id int // This does nothing
 	playing bool
@@ -33,6 +45,10 @@ pub mut:
 pub fn (mut base_backend BaseAudioBackend) init() {}
 
 pub fn (mut base_backend BaseAudioBackend) load_audio(path string) IAudio {
+	return &BaseAudio{}
+}
+
+pub fn (mut base_backend BaseAudioBackend) load_sample(path string) ISample {
 	return &BaseAudio{}
 }
 
