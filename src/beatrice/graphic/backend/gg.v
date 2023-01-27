@@ -74,6 +74,8 @@ pub fn (gg_backend &GGBackend) draw_image_with_config(config ImageDrawConfig) {
 			}
 			color: gx.Color{u8(config.color.r), u8(config.color.g), u8(config.color.b), u8(config.color.a)}
 			effect: gg.ImageEffect(config.effects)
+			z: config.z_index
+			rotate: int(config.angle)
 		})
 	}
 }

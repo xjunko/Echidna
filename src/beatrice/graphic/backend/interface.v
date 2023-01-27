@@ -97,6 +97,8 @@ pub mut:
 	size     vector.Vector2[f64]
 	color    object.GameObjectColor[f64]
 	effects  DrawEffect = .alpha
+	z_index  int
+	angle    f64
 }
 
 //

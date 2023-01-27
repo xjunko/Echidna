@@ -12,6 +12,7 @@ pub mut:
 	origin   vector.Origin = vector.centre
 
 	always_visible bool
+	z_index        int
 }
 
 pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
@@ -28,6 +29,8 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 		position: pos
 		size: size
 		color: sprite.color
+		z_index: sprite.z_index
+		angle: sprite.angle
 	)
 
 	// Debug

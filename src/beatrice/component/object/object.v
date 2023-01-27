@@ -25,6 +25,7 @@ pub mut:
 	position vector.Vector2[f64]
 	size     vector.Vector2[f64]
 	color    GameObjectColor[f64] = GameObjectColor[f64]{255.0, 255.0, 255.0, 255.0}
+	angle    f64
 }
 
 // Updates
@@ -62,6 +63,9 @@ pub fn (mut object GameObject) apply_event(t transform.Transform[f64], time f64)
 		.fade {
 			object.color.a = t.as_one(time)
 		}
+		.angle {
+			object.angle = (t.as_one(time) * 180.0 / math.pi) * -1.0
+		}
 		.scale {
 			v := t.as_vector(time)
 			object.size.x = object.texture_size.x * v.x
@@ -77,7 +81,7 @@ pub fn (mut object GameObject) apply_event(t transform.Transform[f64], time f64)
 			object.size.x = v.x
 			object.size.y = v.y
 		}
-		else {}
+		// else {}
 	}
 }
 
