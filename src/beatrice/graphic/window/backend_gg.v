@@ -18,7 +18,7 @@ pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 	// HACK: this is awful but there isnt a better way of expressing this
 	init_fn := [window.init, args.init_fn][int(!isnil(args.init_fn))]
 	init_temporary_hack := fn [init_fn, args] (mut ptr voidptr) {
-		init_fn(ptr) // lord 
+		init_fn(ptr) // lord
 
 		if !args.vsync {
 			// Disable vsync

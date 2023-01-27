@@ -43,7 +43,7 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 		font_path = 'assets/font/japanese.ttf'
 	}
 
-	mut font := ttf.open_font(font_path.str, int(20 / 2)) // Follow GG's default font size
+	mut font := ttf.open_font(font_path.str, int(16 / 2)) // Follow GG's default font size
 
 	// Backend
 	window.backend = &backend.SDLBackend{

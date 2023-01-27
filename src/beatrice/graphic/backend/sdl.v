@@ -172,11 +172,11 @@ pub fn (sdl_backend &SDLBackend) draw_image_with_config(config ImageDrawConfig) 
 
 	if mut texture is SDLTexture {
 		sdl.set_texture_alpha_mod(texture.texture, u8(config.color.a))
-		sdl.render_copy(sdl_backend.renderer, texture.texture, sdl.null, sdl.Rect{
+		sdl.render_copy_ex(sdl_backend.renderer, texture.texture, sdl.null, sdl.Rect{
 			x: int(config.position.x)
 			y: int(config.position.y)
 			w: int(config.size.x)
 			h: int(config.size.y)
-		})
+		}, config.angle, sdl.null, .@none)
 	}
 }
