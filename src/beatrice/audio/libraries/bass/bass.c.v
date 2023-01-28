@@ -23,6 +23,7 @@ fn C.BASS_ChannelSetPosition(C.HSTREAM, C.QWORD, int)
 // Utils
 fn C.BASS_SampleGetChannel(C.HSAMPLE, int) C.HSTREAM
 fn C.BASS_SampleLoad(int, &char, int, int, int, int) C.HSTREAM
+fn C.BASS_ChannelGetLength(C.HSTREAM, int) C.QWORD
 fn C.BASS_ChannelSeconds2Bytes(C.HSTREAM, f64) C.QWORD
 fn C.BASS_ChannelBytes2Seconds(C.HSTREAM, f64) C.QWORD
 
