@@ -23,6 +23,8 @@ mut:
 	pause()
 	resume()
 	set_volume(f64)
+	get_position() f64
+	get_length() f64
 }
 
 // It's like `IAudio` but spam-able.
@@ -34,6 +36,8 @@ mut:
 	pause()
 	resume()
 	set_volume(f64)
+	get_position() f64
+	get_length() f64
 }
 
 // Base Struct
@@ -67,3 +71,11 @@ pub fn (mut base_audio BaseAudio) pause() {}
 pub fn (mut base_audio BaseAudio) resume() {}
 
 pub fn (mut base_audio BaseAudio) set_volume(vol f64) {}
+
+pub fn (mut base_audio BaseAudio) get_position() f64 {
+	return -1.0
+}
+
+pub fn (mut base_audio BaseAudio) get_length() f64 {
+	return -1.0
+}
