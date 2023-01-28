@@ -51,8 +51,9 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 [args; params]
 pub struct ExtraResizeArgument {
 pub mut:
-	keep_ratio bool
-	resize_to  vector.Vector2[f64]
+	keep_ratio  bool
+	keep_height bool // Resize till it fits on Target's Y
+	resize_to   vector.Vector2[f64]
 }
 
 pub fn (mut sprite Sprite) reset_size_based_on_texture(extra ExtraResizeArgument) {
@@ -69,7 +70,15 @@ pub fn (mut sprite Sprite) reset_size_based_on_texture(extra ExtraResizeArgument
 
 		// Replace size but keep ratio relative to texture's scale
 		if extra.keep_ratio {
-			ratio := extra.resize_to.x / texture_size.x
+			mut ratio := extra.resize_to.x / texture_size.x
+
+			// Make sure the height also fits.
+			// Width will be over the target.
+			if extra.keep_height {
+				for (texture_size.y * ratio) < extra.resize_to.y {
+					ratio += 0.1
+				}
+			}
 
 			sprite.texture_size = texture_size.scale(ratio)
 			sprite.size = texture_size.scale(ratio)
