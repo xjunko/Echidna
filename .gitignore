@@ -34,7 +34,8 @@ src/main.v
 
 # TODO: Remove this once i solved the bass sharing issues
 src/beatrice/audio/bass.vv
-src/beatrice/audio/bass.v
+src/beatrice/audio/bass*
+src/beatrice/graphic/export/*
 
 # Weird ass linux shit
 .fuse_*
