@@ -98,8 +98,8 @@ pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig)
 	u1 := f32(1.0) // f32(img.width) / f32(img.width)
 	v1 := f32(1.0) // f32(img.height) / f32(img.height)
 
-	x0 := f32(image_pos.x * gg_backend.ctx.scale)
-	y0 := f32(image_pos.y * gg_backend.ctx.scale)
+	mut x0 := f32(image_pos.x * gg_backend.ctx.scale)
+	mut y0 := f32(image_pos.y * gg_backend.ctx.scale)
 
 	x1 := f32((image_pos.x + image_size.x) * gg_backend.ctx.scale)
 	mut y1 := f32((image_pos.y + image_size.y) * gg_backend.ctx.scale)
@@ -118,7 +118,12 @@ pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig)
 	mut v0f := if !flip_y { v0 } else { v1 }
 	mut v1f := if !flip_y { v1 } else { v0 }
 
-	sgl.load_pipeline(gg_backend.ctx.pipeline.alpha)
+	if config.effects == .add {
+		sgl.load_pipeline(gg_backend.ctx.pipeline.add)
+	} else {
+		sgl.load_pipeline(gg_backend.ctx.pipeline.alpha)
+	}
+
 	sgl.enable_texture()
 	sgl.texture(img.simg)
 
@@ -126,6 +131,9 @@ pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig)
 	if config.angle != 0.0 {
 		width := f32(image_size.x * gg_backend.ctx.scale)
 		height := f32((if image_size.y > 0 { image_size.y } else { img.height }) * gg_backend.ctx.scale)
+
+		x0 += f32(config.origin_offset.x)
+		y0 += f32(config.origin_offset.y)
 
 		sgl.push_matrix()
 
@@ -180,6 +188,9 @@ pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig)
 				sgl.translate(-x0 - width, -y0 - height, 0)
 			}
 		}
+
+		x0 -= f32(config.origin_offset.x)
+		y0 -= f32(config.origin_offset.y)
 	}
 
 	sgl.begin_quads()
