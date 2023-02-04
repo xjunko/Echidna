@@ -62,30 +62,7 @@ pub fn (mut gg_backend GGBackend) create_image(path string) texture.ITexture {
 }
 
 pub fn (gg_backend &GGBackend) draw_image_with_config(config ImageDrawConfig) {
-	if true {
-		gg_backend.draw_image_with_config_ex(config)
-		return
-	}
-
-	// mut texture := unsafe { &config.texture }
-
-	// if mut texture is gg.Image {
-	// 	// gg_backend.draw_image_with_config_ex(gg.DrawImageConfig{
-	// 	// 	img: texture
-	// 	// 	img_id: texture.id
-	// 	// 	img_rect: gg.Rect{
-	// 	// 		x: f32(config.position.x)
-	// 	// 		y: f32(config.position.y)
-	// 	// 		width: f32(config.size.x)
-	// 	// 		height: f32(config.size.y)
-	// 	// 	}
-	// 	// 	color: gx.Color{u8(config.color.r), u8(config.color.g), u8(config.color.b), u8(config.color.a)}
-	// 	// 	effect: gg.ImageEffect(config.effects)
-	// 	// 	z: config.z_index
-	// 	// 	rotate: int(config.angle)
-	// 	// })
-
-	// }
+	gg_backend.draw_image_with_config_ex(config)
 }
 
 pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig) {
