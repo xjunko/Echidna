@@ -27,6 +27,7 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 	arg.backend.draw_image_with_config(
 		texture: sprite.textures[0]
 		position: pos
+		origin: sprite.origin
 		size: size
 		color: sprite.color
 		z_index: sprite.z_index
