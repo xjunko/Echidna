@@ -8,8 +8,10 @@ import beatrice.graphic.texture
 pub struct Sprite {
 	object.GameObject
 pub mut:
-	textures []texture.ITexture
-	origin   vector.Origin = vector.centre
+	effects       backend.DrawEffect = .alpha
+	textures      []texture.ITexture
+	origin        vector.Origin = vector.centre
+	origin_offset vector.Vector2[f64]
 
 	always_visible bool
 	z_index        int
@@ -28,10 +30,12 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 		texture: sprite.textures[0]
 		position: pos
 		origin: sprite.origin
+		origin_offset: sprite.origin_offset
 		size: size
 		color: sprite.color
 		z_index: sprite.z_index
 		angle: sprite.angle
+		effects: sprite.effects
 	)
 
 	// Debug

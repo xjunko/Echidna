@@ -92,14 +92,15 @@ pub enum DrawEffect {
 [args; params]
 pub struct ImageDrawConfig {
 pub mut:
-	texture  texture.ITexture
-	position vector.Vector2[f64]
-	origin   vector.Origin = vector.centre
-	size     vector.Vector2[f64]
-	color    object.GameObjectColor[f64]
-	effects  DrawEffect = .alpha
-	z_index  int
-	angle    f64
+	texture       texture.ITexture
+	position      vector.Vector2[f64]
+	origin        vector.Origin = vector.centre
+	origin_offset vector.Vector2[f64]
+	size          vector.Vector2[f64]
+	color         object.GameObjectColor[f64]
+	effects       DrawEffect = .alpha
+	z_index       int
+	angle         f64
 }
 
 //
