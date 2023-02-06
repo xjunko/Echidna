@@ -13,6 +13,7 @@ const (
 	time_per_frame = 1000.0 / 1000.0
 )
 
+[heap]
 pub struct SDLBackend {
 	BaseBackend
 mut:
@@ -102,6 +103,11 @@ pub fn (sdl_backend &SDLBackend) draw_rect_empty(x f64, y f64, width f64, height
 }
 
 pub fn (sdl_backend &SDLBackend) draw_text(x f64, y f64, text string, config gx.TextCfg) {
+	if text.len == 0 || text.trim_space().len == 0 {
+		// Ignore empty text
+		return
+	}
+
 	font := ttf.open_font(sdl_backend.font_path.str, int(config.size / 2))
 
 	// Get text size
