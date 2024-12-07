@@ -30,15 +30,15 @@ pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 
 	// Backend: GG
 	mut ctx := gg.new_context(
-		width: args.width
-		height: args.height
+		width:     args.width
+		height:    args.height
 		user_data: window
 		// FNs
-		init_fn: init_temporary_hack
-		frame_fn: frame_fn
+		init_fn:   init_temporary_hack
+		frame_fn:  frame_fn
 		font_path: font_path
 		// Mouse
-		click_fn: fn (x f32, y f32, button gg.MouseButton, mut window CommonWindow) {
+		click_fn:   fn (x f32, y f32, button gg.MouseButton, mut window CommonWindow) {
 			window.input.mouse.trigger(.mouse_click, .mouse_left, vector.Vector2[f64]{
 				x: f64(x)
 				y: f64(y)
@@ -50,7 +50,7 @@ pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 				y: f64(y)
 			})
 		}
-		move_fn: fn (x f32, y f32, mut window CommonWindow) {
+		move_fn:    fn (x f32, y f32, mut window CommonWindow) {
 			window.input.mouse.trigger(.mouse_move, .mouse_move, vector.Vector2[f64]{
 				x: f64(x)
 				y: f64(y)
@@ -60,7 +60,7 @@ pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 		keydown_fn: fn (c gg.KeyCode, m gg.Modifier, mut window CommonWindow) {
 			window.input.keyboard.trigger(.key_click, input.ButtonType(c), vector.Vector2[f64]{0.0, 0.0})
 		}
-		keyup_fn: fn (c gg.KeyCode, m gg.Modifier, mut window CommonWindow) {
+		keyup_fn:   fn (c gg.KeyCode, m gg.Modifier, mut window CommonWindow) {
 			window.input.keyboard.trigger(.key_unclick, input.ButtonType(c), vector.Vector2[f64]{0.0, 0.0})
 		}
 	)

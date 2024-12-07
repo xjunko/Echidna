@@ -1,8 +1,6 @@
 module bass
 
-pub const (
-	global = &GlobalMixer{}
-)
+pub const global = &GlobalMixer{}
 
 pub struct GlobalMixer {
 pub mut:
@@ -51,7 +49,7 @@ pub fn initialize_bass(offscreen bool) {
 		// Point global to that mixer
 		// this is cursed
 		unsafe {
-			mut g_mixer := bass.global
+			mut g_mixer := global
 			g_mixer.master = master_mixer
 		}
 	} else {

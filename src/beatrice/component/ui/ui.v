@@ -13,7 +13,7 @@ pub mut:
 }
 
 //
-[heap]
+@[heap]
 pub struct UIManager {
 mut:
 	config UIConfig

@@ -37,7 +37,7 @@ pub fn (v Vector2[T]) scale(by T) Vector2[T] {
 }
 
 pub fn (v Vector2[T]) equal(t Vector2[T]) bool {
-	return (v.x == t.x) && (v.y == t.y)
+	return v.x == t.x && v.y == t.y
 }
 
 pub fn (v Vector2[T]) clone() Vector2[T] {

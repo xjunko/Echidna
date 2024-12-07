@@ -14,7 +14,7 @@ pub enum BackendType {
 
 // Interface
 
-[heap]
+@[heap]
 pub interface IBackend {
 	// FNs that doesnt need to be mutable
 	draw_rect_filled(f64, f64, f64, f64, object.GameObjectColor[f64])
@@ -32,7 +32,7 @@ mut:
 }
 
 // Base Struct
-[heap]
+@[heap]
 pub struct BaseBackend {
 pub mut:
 	typ BackendType = .@none
@@ -89,7 +89,7 @@ pub enum DrawEffect {
 	add
 }
 
-[args; params]
+@[args; params]
 pub struct ImageDrawConfig {
 pub mut:
 	texture       texture.ITexture
@@ -104,7 +104,7 @@ pub mut:
 }
 
 //
-[args; params]
+@[args; params]
 pub struct DrawConfig {
 pub mut:
 	backend &IBackend = unsafe { nil }

@@ -27,15 +27,15 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 		.add(arg.offset)
 
 	arg.backend.draw_image_with_config(
-		texture: sprite.textures[0]
-		position: pos
-		origin: sprite.origin
+		texture:       sprite.textures[0]
+		position:      pos
+		origin:        sprite.origin
 		origin_offset: sprite.origin_offset
-		size: size
-		color: sprite.color
-		z_index: sprite.z_index
-		angle: sprite.angle
-		effects: sprite.effects
+		size:          size
+		color:         sprite.color
+		z_index:       sprite.z_index
+		angle:         sprite.angle
+		effects:       sprite.effects
 	)
 
 	// Debug
@@ -53,7 +53,7 @@ pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
 }
 
 // Sprite specific reset
-[args; params]
+@[args; params]
 pub struct ExtraResizeArgument {
 pub mut:
 	keep_ratio  bool
@@ -62,10 +62,10 @@ pub mut:
 }
 
 pub fn (mut sprite Sprite) reset_size_based_on_texture(extra ExtraResizeArgument) {
-	mut texture := unsafe { &sprite.textures[0] }
+	mut ref_texture := unsafe { &sprite.textures[0] }
 	texture_size := vector.Vector2[f64]{
-		x: f64(texture.width)
-		y: f64(texture.height)
+		x: f64(ref_texture.width)
+		y: f64(ref_texture.height)
 	}
 
 	if extra.resize_to.changed() {
@@ -90,8 +90,8 @@ pub fn (mut sprite Sprite) reset_size_based_on_texture(extra ExtraResizeArgument
 		}
 	} else {
 		// Default: Reset to sprite size
-		sprite.texture_size.x = f64(texture.width)
-		sprite.texture_size.y = f64(texture.height)
+		sprite.texture_size.x = f64(ref_texture.width)
+		sprite.texture_size.y = f64(ref_texture.height)
 
 		sprite.size.x = sprite.texture_size.x
 		sprite.size.y = sprite.texture_size.y

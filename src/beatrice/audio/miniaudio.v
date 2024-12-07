@@ -3,7 +3,7 @@ module audio
 import beatrice.audio.libraries.miniaudio
 
 // Backend
-[heap]
+@[heap]
 pub struct MABackend {
 	BaseAudioBackend
 mut:

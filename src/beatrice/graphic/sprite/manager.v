@@ -99,7 +99,7 @@ pub fn (mut manager Manager) draw(arg backend.DrawConfig) {
 	$if sprite_debug ? {
 		arg.backend.draw_text(20, 50, 'Manager: ${draw_count} drawing', gx.TextCfg{
 			color: gx.white
-			size: 30
+			size:  30
 		})
 	}
 }
@@ -112,7 +112,7 @@ pub fn (mut manager Manager) draw_experimental(arg backend.DrawConfig) {
 	$if sprite_debug ? {
 		arg.backend.draw_text(20, 50, 'Manager: ${manager.processed.len} drawing', gx.TextCfg{
 			color: gx.white
-			size: 30
+			size:  30
 		})
 	}
 }

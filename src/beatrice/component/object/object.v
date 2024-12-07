@@ -2,7 +2,7 @@ module object
 
 import math
 import beatrice.math.vector
-import beatrice.math.time
+import beatrice.math.time as mtime
 import beatrice.math.transform
 
 pub struct GameObjectColor[T] {
@@ -19,7 +19,7 @@ mut:
 	texture_size vector.Vector2[f64] = vector.Vector2[f64]{1.0, 1.0} // 1x1 by default, to be replace by the sprite texture size.
 	last_update  f64
 pub mut:
-	time       time.Time[f64]
+	time       mtime.Time[f64]
 	transforms []transform.Transform[f64]
 	// Transform attributes
 	position vector.Vector2[f64]
@@ -29,9 +29,7 @@ pub mut:
 }
 
 // Updates
-const (
-	hack_time_to_catch_up = 100.0
-)
+const hack_time_to_catch_up = 100.0
 
 pub fn (mut object GameObject) update(time f64) {
 	object.last_update = time
@@ -122,7 +120,7 @@ pub fn (mut object GameObject) reset_attributes_based_on_transforms() {
 }
 
 // Info
-[inline]
+@[inline]
 pub fn (mut object GameObject) is_available_at(time f64) bool {
 	// println("${time} | ${object.time}")
 	return time >= object.time.start && time <= object.time.end

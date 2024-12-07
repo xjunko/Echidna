@@ -2,8 +2,8 @@ module texture
 
 pub interface ITexture {
 mut:
-	id int
-	width int
+	id     int
+	width  int
 	height int
 }
 

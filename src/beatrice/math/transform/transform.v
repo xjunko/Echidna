@@ -1,6 +1,6 @@
 module transform
 
-import beatrice.math.time
+import beatrice.math.time as mtime
 import beatrice.math.vector
 import beatrice.math.easing
 
@@ -19,10 +19,10 @@ pub enum TransformType {
 
 pub struct Transform[T] {
 pub mut:
-	typ    TransformType         [required]
+	typ    TransformType @[required]
 	easing easing.EasingFunction = easing.linear
-	time   time.Time[T]
-	before []T                   [required]
+	time   mtime.Time[T]
+	before []T @[required]
 	after  []T
 }
 

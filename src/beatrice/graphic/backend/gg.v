@@ -7,11 +7,9 @@ import beatrice.component.object
 import beatrice.graphic.texture
 import beatrice.math.vector
 
-pub const (
-	i_am_being_used = 420
-)
+pub const i_am_being_used = 420
 
-[heap]
+@[heap]
 pub struct GGBackend {
 	BaseBackend
 mut:
@@ -55,7 +53,9 @@ pub fn (gg_backend &GGBackend) draw_text(x f64, y f64, text string, config gx.Te
 // Image
 pub fn (mut gg_backend GGBackend) create_image(path string) texture.ITexture {
 	if path.to_lower() !in gg_backend.cache {
-		gg_backend.cache[path.to_lower()] = gg_backend.ctx.create_image(path)
+		gg_backend.cache[path.to_lower()] = gg_backend.ctx.create_image(path) or {
+			panic('Failed to load image: ${path}')
+		}
 	}
 
 	return unsafe { gg_backend.cache[path.to_lower()] }
@@ -70,12 +70,12 @@ pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig)
 	// and without the checks.
 	// NOTE: This is a hack.
 
-	mut texture := unsafe { &config.texture }
+	mut ref_texture := unsafe { &config.texture }
 
 	mut img := &gg.Image{}
 
-	if mut texture is gg.Image {
-		img = texture
+	if mut ref_texture is gg.Image {
+		img = ref_texture
 	}
 
 	if !img.simg_ok {
@@ -124,8 +124,11 @@ pub fn (gg_backend &GGBackend) draw_image_with_config_ex(config ImageDrawConfig)
 		sgl.load_pipeline(gg_backend.ctx.pipeline.alpha)
 	}
 
+	if true {
+		panic('TODO CHECK GG BACKEND')
+	}
 	sgl.enable_texture()
-	sgl.texture(img.simg)
+	// sgl.texture(img.simg)
 
 	// Here comes the fun part
 	if config.angle != 0.0 {

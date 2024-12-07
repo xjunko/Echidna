@@ -7,10 +7,10 @@ pub struct Window {
 }
 
 fn main() {
-	mut window := &Window{}
+	mut basic_window := &Window{}
 
-	window.start(
-		width: 1280
+	basic_window.start(
+		width:  1280
 		height: 720
 	)
 }

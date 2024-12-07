@@ -17,7 +17,7 @@ mut:
 
 pub interface IAudio {
 mut:
-	id int // This does nothing
+	id      int // This does nothing
 	playing bool
 	play()
 	pause()
@@ -30,7 +30,7 @@ mut:
 // It's like `IAudio` but spam-able.
 pub interface ISample {
 mut:
-	id int // This does nothing
+	id      int // This does nothing
 	playing bool
 	play()
 	pause()

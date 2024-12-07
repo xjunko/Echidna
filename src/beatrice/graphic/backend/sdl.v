@@ -8,18 +8,15 @@ import sdl.image
 import beatrice.component.object
 import beatrice.graphic.texture
 
-const (
-	// humble amount of 1000fps
-	time_per_frame = 1000.0 / 1000.0
-)
+// humble amount of 1000fps
+const time_per_frame = 1000.0 / 1000.0
 
-[heap]
+@[heap]
 pub struct SDLBackend {
 	BaseBackend
 mut:
 	// Internal
-	font_path string // maybe split this into english/japanese
-	cache     map[string]&SDLTexture
+	cache map[string]&SDLTexture
 	// Render Timer
 	start u64
 	end   u64
@@ -30,7 +27,9 @@ pub mut:
 	window   &sdl.Window   = unsafe { nil }
 	renderer &sdl.Renderer = unsafe { nil }
 	surface  &sdl.Surface  = unsafe { nil }
-	font     &ttf.Font     = unsafe { nil }
+
+	font      &ttf.Font = unsafe { nil }
+	font_path string // maybe split this into english/japanese
 }
 
 // OPs
@@ -44,7 +43,7 @@ pub fn (mut sdl_backend SDLBackend) end() {
 	// Render FPS
 	sdl_backend.draw_rect_filled(0, 0, 200, 40, object.GameObjectColor[f64]{0.0, 0.0, 0.0, 255.0})
 	sdl_backend.draw_text(5, 5, '${sdl_backend.fps:.0f}fps', gx.TextCfg{
-		size: 40
+		size:  40
 		align: .left
 		color: gx.white
 	})
@@ -59,7 +58,7 @@ pub fn (mut sdl_backend SDLBackend) end() {
 	sdl_backend.fps = 1.0 / elapsed_time
 
 	// Limit the FPS
-	sdl.delay(u32(math.floor(backend.time_per_frame - elapsed_time)))
+	sdl.delay(u32(math.floor(time_per_frame - elapsed_time)))
 }
 
 // Utils
@@ -158,15 +157,15 @@ pub mut:
 
 pub fn (mut sdl_backend SDLBackend) create_image(path string) texture.ITexture {
 	if path.to_lower() !in sdl_backend.cache {
-		texture := image.load_texture(sdl_backend.renderer, path.str)
+		sdl_texture := image.load_texture(sdl_backend.renderer, path.str)
 
 		w, h := 0, 0
-		sdl.query_texture(texture, sdl.null, sdl.null, &w, &h)
+		sdl.query_texture(sdl_texture, sdl.null, sdl.null, &w, &h)
 
 		sdl_backend.cache[path.to_lower()] = &SDLTexture{
-			texture: texture
-			width: w
-			height: h
+			texture: sdl_texture
+			width:   w
+			height:  h
 		}
 	}
 
@@ -174,17 +173,17 @@ pub fn (mut sdl_backend SDLBackend) create_image(path string) texture.ITexture {
 }
 
 pub fn (sdl_backend &SDLBackend) draw_image_with_config(config ImageDrawConfig) {
-	mut texture := unsafe { &config.texture }
+	mut ref_texture := unsafe { &config.texture }
 
-	if mut texture is SDLTexture {
+	if mut ref_texture is SDLTexture {
 		if config.effects == .add {
-			sdl.set_texture_blend_mode(texture.texture, .add)
+			sdl.set_texture_blend_mode(ref_texture.texture, .add)
 		} else {
-			sdl.set_texture_blend_mode(texture.texture, .blend)
+			sdl.set_texture_blend_mode(ref_texture.texture, .blend)
 		}
 
-		sdl.set_texture_alpha_mod(texture.texture, u8(config.color.a))
-		sdl.render_copy_ex(sdl_backend.renderer, texture.texture, sdl.null, sdl.Rect{
+		sdl.set_texture_alpha_mod(ref_texture.texture, u8(config.color.a))
+		sdl.render_copy_ex(sdl_backend.renderer, ref_texture.texture, sdl.null, sdl.Rect{
 			x: int(config.position.x)
 			y: int(config.position.y)
 			w: int(config.size.x)

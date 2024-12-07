@@ -26,14 +26,14 @@ pub type Context = C.mu_Context
 pub type Container = C.mu_Container
 
 // commons
-[typedef]
+@[typedef]
 pub struct C.mu_Vec2 {
 pub mut:
 	x int
 	y int
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_Rect {
 pub mut:
 	x int
@@ -42,7 +42,7 @@ pub mut:
 	h int
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_Color {
 pub mut:
 	r u8
@@ -52,14 +52,14 @@ pub mut:
 }
 
 // commands
-[typedef]
+@[typedef]
 pub struct C.mu_BaseCommand {
 pub mut:
 	@type int
 	size  int
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_TextCommand {
 pub mut:
 	base  BaseCommand
@@ -69,7 +69,7 @@ pub mut:
 	pos   Vec2
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_RectCommand {
 pub mut:
 	base  BaseCommand
@@ -77,7 +77,7 @@ pub mut:
 	color Color
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_IconCommand {
 pub mut:
 	base  BaseCommand
@@ -86,14 +86,14 @@ pub mut:
 	color Color
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_ClipCommand {
 pub mut:
 	base BaseCommand
 	rect Rect
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_Command {
 pub mut:
 	@type int
@@ -105,7 +105,7 @@ pub mut:
 }
 
 // the boring stuff
-[typedef]
+@[typedef]
 pub struct C.mu_Style {
 pub mut:
 	font           Font
@@ -119,7 +119,7 @@ pub mut:
 	colors         [style_max_color_stupid_workaround_const_bullshit]Color
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_Context {
 pub mut:
 	// callbacks
@@ -158,7 +158,7 @@ pub mut:
 	input_text     [32]char
 }
 
-[typedef]
+@[typedef]
 pub struct C.mu_Container {
 pub mut:
 	open   int

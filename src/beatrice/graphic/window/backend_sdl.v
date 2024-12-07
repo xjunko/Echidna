@@ -47,10 +47,10 @@ pub fn (mut window CommonWindow) start_sdl(args StartWindowArgument) {
 
 	// Backend
 	window.backend = &backend.SDLBackend{
-		window: sdl_window
-		renderer: sdl_renderer
-		surface: sdl_surface
-		font: font
+		window:    sdl_window
+		renderer:  sdl_renderer
+		surface:   sdl_surface
+		font:      font
 		font_path: font_path
 	}
 

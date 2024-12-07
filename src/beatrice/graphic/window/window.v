@@ -8,18 +8,16 @@ import beatrice.graphic.sprite
 import beatrice.component.object
 import beatrice.graphic.window.input
 
-const (
-	used_import = backend.i_am_being_used
-)
+const used_import = backend.i_am_being_used
 
-[heap]
+@[heap]
 pub struct CommonWindow {
 mut:
 	args StartWindowArgument
 pub mut:
 	backend &backend.IBackend    = unsafe { nil }
 	input   &input.InputListener = &input.InputListener{}
-	mutex   &sync.Mutex = sync.new_mutex()
+	mutex   &sync.Mutex          = sync.new_mutex()
 	// Drawables
 	sprite_manager &sprite.Manager = sprite.new_manager()
 }
