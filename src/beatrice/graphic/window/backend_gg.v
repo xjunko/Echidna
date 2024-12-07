@@ -1,5 +1,6 @@
 module window
 
+import os
 import gg // TODO: Configurable backend for graphics
 import beatrice.graphic.backend
 import beatrice.graphic.window.input
@@ -13,6 +14,11 @@ pub fn (mut window CommonWindow) start_gg(args StartWindowArgument) {
 
 	$if font_japanese ? {
 		font_path = 'assets/font/japanese.ttf'
+	}
+
+	if !os.exists(font_path) {
+		println('[WARN] Font file not found: ' + font_path)
+		font_path = ''
 	}
 
 	// HACK: this is awful but there isnt a better way of expressing this
