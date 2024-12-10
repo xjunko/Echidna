@@ -38,7 +38,11 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 		img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
 			'teto')
 
-		graphics.draw_image(img)
+		graphics.draw_image(
+			image:    img
+			position: vector.Vector2[f32]{100, 100}
+			rotation: f32(sample_app.c_engine.time.time) / 10.0
+		)
 	}
 	// Text
 	{
