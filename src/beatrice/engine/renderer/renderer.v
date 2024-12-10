@@ -37,6 +37,7 @@ pub mut:
 	image    &resource.Image     @[required]
 	position vector.Vector2[f64] @[required]
 	size     vector.Vector2[f64]
+	color    Color[f64]    = Color.from_rgba[f64](255, 255, 255, 255)
 	origin   vector.Origin = vector.centre
 	rotation f64
 }
