@@ -4,14 +4,7 @@ import math
 import beatrice.math.vector
 import beatrice.math.time as mtime
 import beatrice.math.transform
-
-pub struct GameObjectColor[T] {
-pub mut:
-	r T
-	g T
-	b T
-	a T
-}
+import beatrice.engine.renderer
 
 // GameObject is a common object idk what to say tbh, its a common thing.
 pub struct GameObject {
@@ -24,7 +17,7 @@ pub mut:
 	// Transform attributes
 	position vector.Vector2[f64]
 	size     vector.Vector2[f64]
-	color    GameObjectColor[f64] = GameObjectColor[f64]{255.0, 255.0, 255.0, 255.0}
+	color    renderer.Color[f64] = renderer.Color.from_rgba[f64](255.0, 255.0, 255.0, 255.0)
 	angle    f64
 }
 
