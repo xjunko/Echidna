@@ -1,6 +1,7 @@
 module app
 
 import beatrice.engine.input
+import beatrice.engine.renderer
 
 pub struct Application {
 	input.KeyboardListener
@@ -10,7 +11,7 @@ pub fn Application.create() &Application {
 	return &Application{}
 }
 
-pub fn (mut app Application) draw() {}
+pub fn (mut app Application) draw(mut graphics renderer.IRenderer) {}
 
 pub fn (mut app Application) update() {}
 

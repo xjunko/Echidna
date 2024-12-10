@@ -5,7 +5,7 @@ import beatrice.math.time
 import beatrice.math.vector
 import beatrice.engine.platform
 import beatrice.engine.input { Keyboard }
-import beatrice.engine.renderer { OpenGLGraphic }
+import beatrice.engine.renderer { IRenderer }
 import beatrice.app.sample { SampleApplication }
 
 pub struct Engine {
@@ -16,7 +16,7 @@ pub mut:
 
 	time     &time.TimeCounter = unsafe { nil }
 	keyboard &Keyboard         = unsafe { nil }
-	graphics &OpenGLGraphic    = unsafe { nil }
+	graphics &IRenderer        = unsafe { nil }
 }
 
 pub fn (mut engine Engine) initialize() {
@@ -68,7 +68,7 @@ pub fn (mut engine Engine) on_key_down(key sdl.Keycode) {
 }
 
 pub fn (mut engine Engine) on_key_up(key sdl.Keycode) {
-	engine.keyboard.on_key_down(key)
+	engine.keyboard.on_key_up(key)
 }
 
 // Mouse
