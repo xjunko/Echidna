@@ -15,6 +15,8 @@ mut:
 
 	manager &sprite.Manager = unsafe { nil }
 	spr     &sprite.Sprite  = unsafe { nil }
+
+	last_delta f64
 }
 
 pub fn SampleApplication.create(mut c_engine engine.Engine) &SampleApplication {
@@ -59,19 +61,19 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 	graphics.set_color(r: 25, g: 25, b: 25)
 
 	// Draw sprites
-	sample_app.manager.draw(mut graphics)
+	// sample_app.manager.draw(mut graphics)
 
 	// Images
 	{
-		// img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
-		// 	'teto')
+		img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
+			'teto')
 
-		// graphics.draw_image(
-		// 	image:    img
-		// 	position: vector.Vector2[f64]{100, 100}
-		// 	rotation: f32(sample_app.c_engine.time.time) / 10.0
-		// 	origin:   vector.centre
-		// )
+		graphics.draw_image(
+			image:    img
+			position: vector.Vector2[f64]{100, 100}
+			rotation: f32(sample_app.c_engine.time.time) / 10.0
+			origin:   vector.centre
+		)
 	}
 	// Text
 	{
@@ -79,17 +81,11 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 			renderer.Color.from_rgb[u8](0, 0, 0))
 		sample_app.fonts.draw_text(mut graphics,
 			text:     'Hello, World!'
-			r:        255
-			g:        255
-			b:        255
 			position: vector.Vector2[f64]{100, 150}
 		)
 
 		sample_app.fonts.draw_text(mut graphics,
 			text:     'HIIII!!!!!!'
-			r:        255
-			g:        255
-			b:        255
 			size:     vector.Vector2[f64]{64, 64}
 			position: vector.Vector2[f64]{700, 600}
 		)
@@ -104,6 +100,47 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 
 		graphics.draw_line(vector.Vector2[f64]{1280, 720}, vector.Vector2[f64]{640, 360},
 			renderer.Color.from_rgb[u8](0, 255, 0))
+	}
+	// FPS
+	{
+		sample_app.draw_fps(mut graphics)
+	}
+}
+
+pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRenderer) {
+	delta_t := sample_app.c_engine.time.delta
+	sample_app.last_delta = (sample_app.last_delta * 0.9) + (delta_t * 0.1)
+	fps := 1000.0 / sample_app.last_delta
+
+	fps_string := '${int(fps)} fps'
+	ms_string := '${sample_app.last_delta:.1f} ms'
+
+	{
+		mut color := renderer.Color.from_rgb[u8](255, 255, 255)
+
+		if fps < 120 {
+			color.b = 0
+			color.g = 0
+		}
+		sample_app.fonts.draw_text(mut graphics,
+			text:           fps_string
+			color:          color
+			align:          .right
+			vertical_align: .bottom
+			size:           vector.Vector2[f64]{24, 24}
+			position:       vector.Vector2[f64]{1280, 720 - 24}
+			outline:        true
+		)
+
+		sample_app.fonts.draw_text(mut graphics,
+			text:           ms_string
+			color:          color
+			align:          .right
+			vertical_align: .bottom
+			size:           vector.Vector2[f64]{24, 24}
+			position:       vector.Vector2[f64]{1280, 720}
+			outline:        true
+		)
 	}
 }
 
