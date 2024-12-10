@@ -5,6 +5,7 @@ import sokol
 import sokol.sgl
 import sokol.gfx
 import sokol.sapp
+import beatrice.math.vector
 
 pub struct OpenGLGraphic {
 mut:
@@ -82,17 +83,62 @@ pub fn (mut gl_graphic OpenGLGraphic) end() {
 	sdl.gl_swap_window(gl_graphic.window)
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) set_bg_color(r u8, g u8, b u8) {
+pub fn (mut gl_graphic OpenGLGraphic) draw_pixel(position vector.Vector2[f32], color Color[u8], size f32) {
+	sgl.begin_points()
+	{
+		sgl.c4b(color.r, color.g, color.b, color.a)
+		sgl.point_size(size)
+		sgl.v2f(position.x, position.y)
+	}
+	sgl.end()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) draw_line(start vector.Vector2[f32], end vector.Vector2[f32], color Color[u8]) {
+	sgl.begin_line_strip()
+	{
+		sgl.c4b(color.r, color.g, color.b, color.a)
+		sgl.v2f(start.x, start.y)
+		sgl.v2f(end.x, end.y)
+	}
+	sgl.end()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) draw_rect_outline(position vector.Vector2[f32], size vector.Vector2[f32], color Color[u8]) {
+	sgl.begin_line_strip()
+	{
+		sgl.c4b(color.r, color.g, color.b, color.a)
+		sgl.v2f(position.x, position.y)
+		sgl.v2f(position.x + size.x, position.y)
+		sgl.v2f(position.x + size.x, position.y + size.y)
+		sgl.v2f(position.x, position.y + size.y)
+		sgl.v2f(position.x, position.y - 1)
+	}
+	sgl.end()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f32], size vector.Vector2[f32], color Color[u8]) {
+	sgl.begin_quads()
+	{
+		sgl.c4b(color.r, color.g, color.b, color.a)
+		sgl.v2f(position.x, position.y)
+		sgl.v2f(position.x + size.x, position.y)
+		sgl.v2f(position.x + size.x, position.y + size.y)
+		sgl.v2f(position.x, position.y + size.y)
+	}
+	sgl.end()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) set_bg_color(color ColorU8) {
 	gl_graphic.pass = gfx.Pass{
-		action:    gfx.create_clear_pass_action(r, g, b, 1.0)
+		action:    gfx.create_clear_pass_action(color.r, color.g, color.b, 1.0)
 		swapchain: glue_swapchain()
 	}
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) set_color(r u8, g u8, b u8) {
+pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
 	sgl.begin_quads()
 	{
-		sgl.c3b(r, g, b)
+		sgl.c3b(color.r, color.g, color.b)
 		sgl.v2f(0, 0)
 		sgl.v2f(1280, 0)
 		sgl.v2f(1280, 720)
