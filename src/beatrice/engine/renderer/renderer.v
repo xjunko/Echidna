@@ -37,6 +37,7 @@ pub mut:
 	image    &resource.Image     @[required]
 	position vector.Vector2[f32] @[required]
 	size     vector.Vector2[f32]
+	origin   vector.Origin = vector.centre
 	rotation f32
 }
 
