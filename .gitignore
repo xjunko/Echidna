@@ -39,3 +39,5 @@ src/beatrice/graphic/export/*
 
 # Weird ass linux shit
 .fuse_*
+
+src/beatrice/app/kyukurarin
