@@ -62,7 +62,7 @@ pub fn (mut fonts Fonts) draw_text(mut graphics renderer.IRenderer, args TextDra
 	fonts.fons.set_size(1.0 * args.size.x)
 	fonts.fons.set_align(0)
 	fonts.fons.set_color(sfons.rgba(args.r, args.g, args.b, 255))
-	fonts.fons.draw_text(100, 100, args.text)
+	fonts.fons.draw_text(args.position.x, args.position.y, args.text)
 }
 
 pub fn (mut fonts Fonts) flush() {
