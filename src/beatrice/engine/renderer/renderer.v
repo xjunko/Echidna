@@ -35,10 +35,10 @@ pub fn Color.from_rgba[T](r T, g T, b T, a T) Color[T] {
 pub struct ImageDrawParameter {
 pub mut:
 	image    &resource.Image     @[required]
-	position vector.Vector2[f32] @[required]
-	size     vector.Vector2[f32]
+	position vector.Vector2[f64] @[required]
+	size     vector.Vector2[f64]
 	origin   vector.Origin = vector.centre
-	rotation f32
+	rotation f64
 }
 
 pub interface IRenderer {
@@ -48,10 +48,10 @@ mut:
 	begin()
 	end()
 
-	draw_pixel(vector.Vector2[f32], Color[u8], f32)
-	draw_line(vector.Vector2[f32], vector.Vector2[f32], Color[u8])
-	draw_rect_outline(vector.Vector2[f32], vector.Vector2[f32], Color[u8])
-	draw_rect(vector.Vector2[f32], vector.Vector2[f32], Color[u8])
+	draw_pixel(vector.Vector2[f64], Color[u8], f64)
+	draw_line(vector.Vector2[f64], vector.Vector2[f64], Color[u8])
+	draw_rect_outline(vector.Vector2[f64], vector.Vector2[f64], Color[u8])
+	draw_rect(vector.Vector2[f64], vector.Vector2[f64], Color[u8])
 
 	set_bg_color(ColorU8)
 	set_color(ColorU8)

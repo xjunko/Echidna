@@ -84,47 +84,47 @@ pub fn (mut gl_graphic OpenGLGraphic) end() {
 	sdl.gl_swap_window(gl_graphic.window)
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) draw_pixel(position vector.Vector2[f32], color Color[u8], size f32) {
+pub fn (mut gl_graphic OpenGLGraphic) draw_pixel(position vector.Vector2[f64], color Color[u8], size f64) {
 	sgl.begin_points()
 	{
 		sgl.c4b(color.r, color.g, color.b, color.a)
-		sgl.point_size(size)
-		sgl.v2f(position.x, position.y)
+		sgl.point_size(f32(size))
+		sgl.v2f(f32(position.x), f32(position.y))
 	}
 	sgl.end()
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) draw_line(start vector.Vector2[f32], end vector.Vector2[f32], color Color[u8]) {
+pub fn (mut gl_graphic OpenGLGraphic) draw_line(start vector.Vector2[f64], end vector.Vector2[f64], color Color[u8]) {
 	sgl.begin_line_strip()
 	{
 		sgl.c4b(color.r, color.g, color.b, color.a)
-		sgl.v2f(start.x, start.y)
-		sgl.v2f(end.x, end.y)
+		sgl.v2f(f32(start.x), f32(start.y))
+		sgl.v2f(f32(end.x), f32(end.y))
 	}
 	sgl.end()
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) draw_rect_outline(position vector.Vector2[f32], size vector.Vector2[f32], color Color[u8]) {
+pub fn (mut gl_graphic OpenGLGraphic) draw_rect_outline(position vector.Vector2[f64], size vector.Vector2[f64], color Color[u8]) {
 	sgl.begin_line_strip()
 	{
 		sgl.c4b(color.r, color.g, color.b, color.a)
-		sgl.v2f(position.x, position.y)
-		sgl.v2f(position.x + size.x, position.y)
-		sgl.v2f(position.x + size.x, position.y + size.y)
-		sgl.v2f(position.x, position.y + size.y)
-		sgl.v2f(position.x, position.y - 1)
+		sgl.v2f(f32(position.x), f32(position.y))
+		sgl.v2f(f32(position.x + size.x), f32(position.y))
+		sgl.v2f(f32(position.x + size.x), f32(position.y + size.y))
+		sgl.v2f(f32(position.x), f32(position.y + size.y))
+		sgl.v2f(f32(position.x), f32(position.y - 1))
 	}
 	sgl.end()
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f32], size vector.Vector2[f32], color Color[u8]) {
+pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f64], size vector.Vector2[f64], color Color[u8]) {
 	sgl.begin_quads()
 	{
 		sgl.c4b(color.r, color.g, color.b, color.a)
-		sgl.v2f(position.x, position.y)
-		sgl.v2f(position.x + size.x, position.y)
-		sgl.v2f(position.x + size.x, position.y + size.y)
-		sgl.v2f(position.x, position.y + size.y)
+		sgl.v2f(f32(position.x), f32(position.y))
+		sgl.v2f(f32(position.x + size.x), f32(position.y))
+		sgl.v2f(f32(position.x + size.x), f32(position.y + size.y))
+		sgl.v2f(f32(position.x), f32(position.y + size.y))
 	}
 	sgl.end()
 }
@@ -148,23 +148,23 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 	u1 := f32(1.0)
 	v1 := f32(1.0)
 
-	mut x0 := image_pos.x
-	mut y0 := image_pos.y
+	mut x0 := f32(image_pos.x)
+	mut y0 := f32(image_pos.y)
 
-	mut x1 := image_pos.x + image_size.x
-	mut y1 := image_pos.y + image_size.y
+	mut x1 := f32(image_pos.x + image_size.x)
+	mut y1 := f32(image_pos.y + image_size.y)
 
 	if image_size.y == 0 {
 		scale := gl_img.width / f32(image_size.x)
-		y1 = image_pos.y + (f32(gl_img.height) / scale)
+		y1 = f32(image_pos.y) + (f32(gl_img.height) / scale)
 	}
 
 	sgl.enable_texture()
 	sgl.texture(gl_img.s_image, gl_img.s_sampler)
 
 	if rotation {
-		width := image_size.x
-		height := image_size.y
+		width := f32(image_size.x)
+		height := f32(image_size.y)
 
 		sgl.push_matrix()
 

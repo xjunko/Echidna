@@ -48,8 +48,8 @@ pub fn (mut fonts Fonts) load_font(font Font) {
 pub struct TextDrawParams {
 pub mut:
 	text      string @[required]
-	position  vector.Vector2[f32]
-	size      vector.Vector2[f32] = vector.Vector2[f32]{c_default_font_size, c_default_font_size}
+	position  vector.Vector2[f64]
+	size      vector.Vector2[f64] = vector.Vector2[f64]{c_default_font_size, c_default_font_size}
 	font_name string              = c_default_font
 	r         u8                  = 255
 	g         u8                  = 255
@@ -59,10 +59,10 @@ pub mut:
 
 pub fn (mut fonts Fonts) draw_text(mut graphics renderer.IRenderer, args TextDrawParams) {
 	fonts.fons.set_font(fonts.fonts[args.font_name].id)
-	fonts.fons.set_size(1.0 * args.size.x)
+	fonts.fons.set_size(f32(1.0 * args.size.x))
 	fonts.fons.set_align(0)
 	fonts.fons.set_color(sfons.rgba(args.r, args.g, args.b, 255))
-	fonts.fons.draw_text(args.position.x, args.position.y, args.text)
+	fonts.fons.draw_text(f32(args.position.x), f32(args.position.y), args.text)
 }
 
 pub fn (mut fonts Fonts) flush() {
