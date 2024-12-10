@@ -2,11 +2,10 @@ module engine
 
 import sdl
 import beatrice.math.time
-import beatrice.math.vector
 import beatrice.engine.platform
 import beatrice.engine.input { Keyboard }
 import beatrice.engine.renderer { IRenderer }
-import beatrice.app { IApplication }
+import beatrice.app.common { IApplication }
 import beatrice.app.sample { SampleApplication }
 
 pub struct Engine {
@@ -15,9 +14,10 @@ mut:
 pub mut:
 	app &IApplication = unsafe { nil }
 
-	time     &time.TimeCounter = unsafe { nil }
-	keyboard &Keyboard         = unsafe { nil }
-	graphics &IRenderer        = unsafe { nil }
+	time             &time.TimeCounter = unsafe { nil }
+	keyboard         &Keyboard         = unsafe { nil }
+	graphics         &IRenderer        = unsafe { nil }
+	resource_manager &ResourceManager  = unsafe { nil }
 }
 
 pub fn (mut engine Engine) initialize() {
@@ -28,6 +28,8 @@ pub fn (mut engine Engine) initialize() {
 	engine.keyboard = Keyboard.create()
 
 	engine.graphics = engine.enviroment.create_renderer()
+
+	engine.resource_manager = ResourceManager.create(mut engine)
 }
 
 pub fn (mut engine Engine) load_application() {
@@ -45,6 +47,8 @@ pub fn (mut engine Engine) on_quit() {
 
 pub fn (mut engine Engine) on_update() {
 	engine.time.tick()
+
+	engine.resource_manager.update()
 
 	if !isnil(engine.app) {
 		engine.app.update()
