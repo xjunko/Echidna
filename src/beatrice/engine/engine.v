@@ -7,20 +7,30 @@ import beatrice.engine.input { Keyboard }
 import beatrice.engine.renderer { IRenderer }
 import beatrice.app.common
 
+const c_default_fps = 9999
+
 pub struct Engine {
 mut:
 	enviroment platform.SDLEnviroment
+
+	run_time   f64
+	frame_time f64
 pub mut:
 	app &common.IApplication = unsafe { nil }
 
-	time             &timer.TimeCounter = unsafe { nil }
-	keyboard         &Keyboard          = unsafe { nil }
-	graphics         &IRenderer         = unsafe { nil }
-	resource_manager &ResourceManager   = unsafe { nil }
+	time    &timer.TimeCounter = unsafe { nil }
+	limiter &timer.Limiter     = unsafe { nil }
+
+	keyboard         &Keyboard        = unsafe { nil }
+	graphics         &IRenderer       = unsafe { nil }
+	resource_manager &ResourceManager = unsafe { nil }
 }
 
 pub fn (mut engine Engine) initialize() {
+	// Timing
 	engine.time = &timer.TimeCounter{}
+	engine.limiter = &timer.Limiter{c_default_fps, 0, 0}
+	engine.frame_time = 1000.0 / f64(c_default_fps)
 	engine.time.reset()
 	engine.time.tick()
 
@@ -45,14 +55,21 @@ pub fn (mut engine Engine) on_quit() {
 }
 
 pub fn (mut engine Engine) on_update() {
-	engine.time.tick()
-
-	engine.resource_manager.update()
-
+	// Timing
+	{
+		engine.time.tick()
+		engine.run_time = engine.time.get_elapsed_time()
+	}
+	// Resources
+	{
+		engine.resource_manager.update()
+	}
+	// Application
 	if !isnil(engine.app) {
 		engine.app.update()
 	}
 
+	// Enviroment
 	engine.enviroment.update()
 }
 

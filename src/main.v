@@ -4,7 +4,6 @@ import sdl
 import beatrice.engine
 import beatrice.engine.platform
 import beatrice.app.sample
-import beatrice.app.kyukurarin
 
 fn main_sdl() {
 	// sdl boilerplate
@@ -37,14 +36,17 @@ fn main_sdl() {
 	mut sdl_enviroment := platform.SDLEnviroment.create(s_window)
 
 	mut current_engine := engine.Engine.create(mut sdl_enviroment)
-	// mut current_app := sample.SampleApplication.create(mut current_engine)
-	mut current_app := kyukurarin.KyuKurarinApplication.create(mut current_engine)
+
+	// Load app here
+	mut current_app := sample.SampleApplication.create(mut current_engine)
+	// mut current_app := kyukurarin.KyuKurarinApplication.create(mut current_engine)
 	current_engine.load_application(mut current_app)
 
 	// main loop
 	mut should_close := false
 	for {
 		current_engine.on_start()
+		sdl.gl_set_swap_interval(0)
 
 		evt := sdl.Event{}
 		for 0 < sdl.poll_event(&evt) {
@@ -78,6 +80,7 @@ fn main_sdl() {
 
 		current_engine.on_update()
 		current_engine.on_paint()
+		current_engine.limiter.sync()
 	}
 
 	// kill

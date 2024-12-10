@@ -32,3 +32,7 @@ pub fn (mut t TimeCounter) tick() f64 {
 
 	return t.delta
 }
+
+pub fn (mut t TimeCounter) get_elapsed_time() f64 {
+	return t.time
+}
