@@ -8,6 +8,42 @@ import sokol.sapp
 import beatrice.math.vector
 import beatrice.engine.resource
 
+pub struct OpenGLPipeline {
+pub mut:
+	alpha sgl.Pipeline
+	add   sgl.Pipeline
+}
+
+fn (mut gl_pipeline OpenGLPipeline) initialize() {
+	// FIXME(FireRedz): this looks kinda funny, find a better way to initialize pipeline.
+
+	// Alpha
+	mut alpha_pipdesc := gfx.PipelineDesc{}
+	unsafe { vmemset(&alpha_pipdesc, 0, int(sizeof(alpha_pipdesc))) }
+	alpha_pipdesc.label = c'alpha-pipeline'
+	alpha_pipdesc.colors[0] = gfx.ColorTargetState{
+		blend: gfx.BlendState{
+			enabled:        true
+			src_factor_rgb: .src_alpha
+			dst_factor_rgb: .one_minus_src_alpha
+		}
+	}
+	gl_pipeline.alpha = sgl.make_pipeline(&alpha_pipdesc)
+
+	// Add
+	mut add_pipdesc := gfx.PipelineDesc{}
+	unsafe { vmemset(&add_pipdesc, 0, int(sizeof(add_pipdesc))) }
+	add_pipdesc.label = c'additive-pipeline'
+	add_pipdesc.colors[0] = gfx.ColorTargetState{
+		blend: gfx.BlendState{
+			enabled:        true
+			src_factor_rgb: .src_alpha
+			dst_factor_rgb: .one
+		}
+	}
+	gl_pipeline.add = sgl.make_pipeline(&add_pipdesc)
+}
+
 pub struct OpenGLGraphic {
 mut:
 	window &sdl.Window = unsafe { nil }
@@ -15,7 +51,8 @@ mut:
 	in_scene     bool
 	antialiasing bool
 
-	pass gfx.Pass
+	pass     gfx.Pass
+	pipeline &OpenGLPipeline = unsafe { nil }
 }
 
 pub fn glue_environment() gfx.Environment {
@@ -58,6 +95,10 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 		action:    action
 		swapchain: glue_swapchain()
 	}
+
+	// pipelines
+	gl_graphic.pipeline = &OpenGLPipeline{}
+	gl_graphic.pipeline.initialize()
 }
 
 pub fn OpenGLGraphic.create(window &sdl.Window) &OpenGLGraphic {
@@ -159,6 +200,7 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 		y1 = f32(image_pos.y) + (f32(gl_img.height) / scale)
 	}
 
+	sgl.load_pipeline(gl_graphic.pipeline.alpha)
 	sgl.enable_texture()
 	sgl.texture(gl_img.s_image, gl_img.s_sampler)
 
@@ -168,16 +210,6 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 
 		sgl.push_matrix()
 
-		// center
-		// {
-		// 	sgl.translate(x0 + (width / 2), y0 + (height / 2), 0)
-		// 	sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
-		// 	sgl.translate(-x0 - (width / 2), -y0 - (height / 2), 0)
-		// }
-		// x0 += f32(config.origin_offset.x)
-		// y0 += f32(config.origin_offset.y)
-
-		// kill me
 		match args.origin.typ {
 			// TOP
 			.top_left {
@@ -228,13 +260,10 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 				sgl.translate(-x0 - width, -y0 - height, 0)
 			}
 		}
-
-		// x0 -= f32(config.origin_offset.x)
-		// y0 -= f32(config.origin_offset.y)
 	}
 
 	sgl.begin_quads()
-	sgl.c4b(255, 255, 255, 255)
+	sgl.c4b(u8(args.color.r), u8(args.color.g), u8(args.color.b), u8(args.color.a))
 	{
 		sgl.v3f_t2f(x0, y0, 0, u0, v0)
 		sgl.v3f_t2f(x1, y0, 0, u1, v0)
