@@ -129,30 +129,59 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f32], si
 	sgl.end()
 }
 
+// Refer to V's gg for the original implementation of this function
 pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 	gl_img := args.image as OpenGLImage
 	rotation := args.rotation != 0.0
+
+	mut image_pos := unsafe { &args.position }
+	mut image_size := unsafe { &args.size }
+
+	if image_size.x == 0 && image_size.y == 0 {
+		image_size.x = f32(gl_img.width)
+		image_size.y = f32(gl_img.height)
+	}
+
+	u0 := f32(0.0)
+	v0 := f32(0.0)
+
+	u1 := f32(1.0)
+	v1 := f32(1.0)
+
+	mut x0 := image_pos.x
+	mut y0 := image_pos.y
+
+	mut x1 := image_pos.x + image_size.x
+	mut y1 := image_pos.y + image_size.y
+
+	if image_size.y == 0 {
+		scale := gl_img.width / f32(image_size.x)
+		y1 = image_pos.y + (f32(gl_img.height) / scale)
+	}
 
 	sgl.enable_texture()
 	sgl.texture(gl_img.s_image, gl_img.s_sampler)
 
 	if rotation {
+		width := image_size.x
+		height := image_size.y
+
 		sgl.push_matrix()
-		sgl.translate(args.position.x + gl_img.width / 2, args.position.y + gl_img.height / 2,
-			0)
-		sgl.rotate(sgl.rad(args.rotation), 0, 0, 1)
-		sgl.translate(-(args.position.x + gl_img.width / 2), -(args.position.y + gl_img.height / 2),
-			0)
+
+		{
+			sgl.translate(x0 + (width / 2), y0 + (height / 2), 0)
+			sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+			sgl.translate(-x0 - (width / 2), -y0 - (height / 2), 0)
+		}
 	}
 
 	sgl.begin_quads()
 	sgl.c4b(255, 255, 255, 255)
 	{
-		sgl.v3f_t2f(args.position.x, args.position.y, 0, 0, 0)
-		sgl.v3f_t2f(args.position.x + gl_img.width, args.position.y, 0, 1, 0)
-		sgl.v3f_t2f(args.position.x + gl_img.width, args.position.y + gl_img.height, 0,
-			1, 1)
-		sgl.v3f_t2f(args.position.x, args.position.y + gl_img.height, 0, 0, 1)
+		sgl.v3f_t2f(x0, y0, 0, u0, v0)
+		sgl.v3f_t2f(x1, y0, 0, u1, v0)
+		sgl.v3f_t2f(x1, y1, 0, u1, v1)
+		sgl.v3f_t2f(x0, y1, 0, u0, v1)
 	}
 	sgl.end()
 
