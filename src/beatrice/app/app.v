@@ -1,14 +1,19 @@
 module app
 
+import beatrice.engine
 import beatrice.engine.input
 import beatrice.engine.renderer
 
 pub struct Application {
 	input.KeyboardListener
+pub mut:
+	c_engine &engine.Engine = unsafe { nil }
 }
 
-pub fn Application.create() &Application {
-	return &Application{}
+pub fn Application.create(mut c_engine engine.Engine) &Application {
+	return &Application{
+		c_engine: unsafe { c_engine }
+	}
 }
 
 pub fn (mut app Application) draw(mut graphics renderer.IRenderer) {}

@@ -1,7 +1,8 @@
 module sample
 
-import beatrice.app
 import beatrice.math.vector
+import beatrice.app
+import beatrice.engine
 import beatrice.engine.font
 import beatrice.engine.input
 import beatrice.engine.renderer
@@ -12,8 +13,10 @@ mut:
 	fonts &font.Fonts = unsafe { nil }
 }
 
-pub fn SampleApplication.create() &SampleApplication {
-	mut application := &SampleApplication{}
+pub fn SampleApplication.create(mut c_engine engine.Engine) &SampleApplication {
+	mut application := &SampleApplication{
+		Application: app.Application.create(mut c_engine)
+	}
 
 	application.initialize()
 
@@ -47,7 +50,8 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 	}
 	// Images
 	{
-		// img := graphics.create_image('assets/images/teto.png', false, false)
+		img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
+			'teto')
 	}
 }
 

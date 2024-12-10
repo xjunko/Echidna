@@ -3,6 +3,7 @@ module main
 import sdl
 import beatrice.engine
 import beatrice.engine.platform
+import beatrice.app.sample
 
 fn main_sdl() {
 	// sdl boilerplate
@@ -35,7 +36,8 @@ fn main_sdl() {
 	mut sdl_enviroment := platform.SDLEnviroment.create(s_window)
 
 	mut current_engine := engine.Engine.create(mut sdl_enviroment)
-	current_engine.load_application()
+	mut current_app := sample.SampleApplication.create(mut current_engine)
+	current_engine.load_application(mut current_app)
 
 	// main loop
 	mut should_close := false
