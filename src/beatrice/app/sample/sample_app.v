@@ -1,6 +1,7 @@
 module sample
 
 import beatrice.app
+import beatrice.math.vector
 import beatrice.engine.font
 import beatrice.engine.input
 import beatrice.engine.renderer
@@ -24,8 +25,19 @@ pub fn (mut sample_app SampleApplication) initialize() {
 }
 
 pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) {
-	graphics.set_color(25, 25, 25)
 	sample_app.fonts.flush()
+
+	graphics.set_color(r: 25, g: 25, b: 25)
+	{
+		graphics.draw_rect(vector.Vector2[f32]{100, 100}, vector.Vector2[f32]{32, 32},
+			renderer.Color.from_rgb[u8](255, 0, 0))
+
+		graphics.draw_rect_outline(vector.Vector2[f32]{640 - 100 / 2, 360 - 64 / 2}, vector.Vector2[f32]{100, 64},
+			renderer.Color.from_rgb[u8](255, 255, 255))
+
+		graphics.draw_line(vector.Vector2[f32]{1280, 720}, vector.Vector2[f32]{640, 360},
+			renderer.Color.from_rgb[u8](0, 255, 0))
+	}
 	sample_app.fonts.draw_text(mut graphics, text: 'Hello, World!')
 }
 
