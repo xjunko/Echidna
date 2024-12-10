@@ -1,4 +1,4 @@
-module time
+module timer
 
 pub struct Time[T] {
 pub mut:

@@ -1,4 +1,4 @@
-module time
+module timer
 
 import time as timelib
 import math

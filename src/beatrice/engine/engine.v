@@ -1,7 +1,7 @@
 module engine
 
 import sdl
-import beatrice.math.time
+import beatrice.math.timer
 import beatrice.engine.platform
 import beatrice.engine.input { Keyboard }
 import beatrice.engine.renderer { IRenderer }
@@ -13,14 +13,14 @@ mut:
 pub mut:
 	app &common.IApplication = unsafe { nil }
 
-	time             &time.TimeCounter = unsafe { nil }
-	keyboard         &Keyboard         = unsafe { nil }
-	graphics         &IRenderer        = unsafe { nil }
-	resource_manager &ResourceManager  = unsafe { nil }
+	time             &timer.TimeCounter = unsafe { nil }
+	keyboard         &Keyboard          = unsafe { nil }
+	graphics         &IRenderer         = unsafe { nil }
+	resource_manager &ResourceManager   = unsafe { nil }
 }
 
 pub fn (mut engine Engine) initialize() {
-	engine.time = &time.TimeCounter{}
+	engine.time = &timer.TimeCounter{}
 	engine.time.reset()
 	engine.time.tick()
 

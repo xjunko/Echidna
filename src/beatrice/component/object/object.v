@@ -2,7 +2,7 @@ module object
 
 import math
 import beatrice.math.vector
-import beatrice.math.time as mtime
+import beatrice.math.timer
 import beatrice.math.transform
 import beatrice.engine.renderer
 
@@ -12,7 +12,7 @@ mut:
 	texture_size vector.Vector2[f64] = vector.Vector2[f64]{1.0, 1.0} // 1x1 by default, to be replace by the sprite texture size.
 	last_update  f64
 pub mut:
-	time       mtime.Time[f64]
+	time       timer.Time[f64]
 	transforms []transform.Transform[f64]
 	// Transform attributes
 	position vector.Vector2[f64]
