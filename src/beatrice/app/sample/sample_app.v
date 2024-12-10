@@ -15,3 +15,7 @@ pub fn SampleApplication.create() &SampleApplication {
 pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) {
 	graphics.set_color(25, 25, 25)
 }
+
+pub fn (mut sample_app SampleApplication) on_key_down(ev &input.KeyboardEvent) {
+	println(ev)
+}

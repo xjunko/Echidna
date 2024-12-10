@@ -6,13 +6,14 @@ import beatrice.math.vector
 import beatrice.engine.platform
 import beatrice.engine.input { Keyboard }
 import beatrice.engine.renderer { IRenderer }
+import beatrice.app { IApplication }
 import beatrice.app.sample { SampleApplication }
 
 pub struct Engine {
 mut:
 	enviroment platform.SDLEnviroment
 pub mut:
-	app &SampleApplication = unsafe { nil }
+	app &IApplication = unsafe { nil }
 
 	time     &time.TimeCounter = unsafe { nil }
 	keyboard &Keyboard         = unsafe { nil }
@@ -30,9 +31,9 @@ pub fn (mut engine Engine) initialize() {
 }
 
 pub fn (mut engine Engine) load_application() {
+	// App entrypoint
 	engine.app = SampleApplication.create()
-
-	engine.keyboard.add_listener(engine.app)
+	engine.keyboard.add_listener(engine.app as SampleApplication)
 }
 
 // Events
