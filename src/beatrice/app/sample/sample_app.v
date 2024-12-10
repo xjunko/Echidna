@@ -1,16 +1,20 @@
 module sample
 
-import beatrice.math.vector
 import beatrice.app
 import beatrice.engine
 import beatrice.engine.font
 import beatrice.engine.input
 import beatrice.engine.renderer
+import beatrice.math.vector
+import beatrice.graphic.sprite
 
 pub struct SampleApplication {
 	app.Application
 mut:
 	fonts &font.Fonts = unsafe { nil }
+
+	manager &sprite.Manager = unsafe { nil }
+	spr     &sprite.Sprite  = unsafe { nil }
 }
 
 pub fn SampleApplication.create(mut c_engine engine.Engine) &SampleApplication {
@@ -25,6 +29,27 @@ pub fn SampleApplication.create(mut c_engine engine.Engine) &SampleApplication {
 
 pub fn (mut sample_app SampleApplication) initialize() {
 	sample_app.fonts = font.Fonts.create()
+	sample_app.manager = sprite.new_manager()
+
+	sample_app.spr = &sprite.Sprite{
+		textures:       [
+			sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
+				'teto'),
+		]
+		always_visible: true
+	}
+
+	sample_app.spr.position.x = 640
+	sample_app.spr.position.y = 360
+
+	sample_app.spr.reset_size_based_on_texture()
+	sample_app.spr.reset_attributes_based_on_transforms()
+
+	sample_app.manager.add(mut sample_app.spr)
+}
+
+pub fn (mut sample_app SampleApplication) update() {
+	sample_app.manager.update(sample_app.c_engine.time.time)
 }
 
 pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) {
@@ -33,17 +58,20 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 	// Background
 	graphics.set_color(r: 25, g: 25, b: 25)
 
+	// Draw sprites
+	sample_app.manager.draw(mut graphics)
+
 	// Images
 	{
-		img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
-			'teto')
+		// img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
+		// 	'teto')
 
-		graphics.draw_image(
-			image:    img
-			position: vector.Vector2[f64]{100, 100}
-			rotation: f32(sample_app.c_engine.time.time) / 10.0
-			origin:   vector.centre
-		)
+		// graphics.draw_image(
+		// 	image:    img
+		// 	position: vector.Vector2[f64]{100, 100}
+		// 	rotation: f32(sample_app.c_engine.time.time) / 10.0
+		// 	origin:   vector.centre
+		// )
 	}
 	// Text
 	{
