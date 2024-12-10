@@ -42,6 +42,7 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 			image:    img
 			position: vector.Vector2[f32]{100, 100}
 			rotation: f32(sample_app.c_engine.time.time) / 10.0
+			origin:   vector.centre
 		)
 	}
 	// Text
