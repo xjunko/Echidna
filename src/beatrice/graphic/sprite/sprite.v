@@ -2,14 +2,13 @@ module sprite
 
 import beatrice.component.object
 import beatrice.math.vector
-import beatrice.graphic.backend
-import beatrice.graphic.texture
+import beatrice.engine.resource
+import beatrice.engine.renderer
 
 pub struct Sprite {
 	object.GameObject
 pub mut:
-	effects       backend.DrawEffect = .alpha
-	textures      []texture.ITexture
+	textures      []&resource.Image
 	origin        vector.Origin = vector.centre
 	origin_offset vector.Vector2[f64]
 
@@ -17,25 +16,22 @@ pub mut:
 	z_index        int
 }
 
-pub fn (mut sprite Sprite) draw(arg backend.DrawConfig) {
+pub fn (mut sprite Sprite) draw(mut graphics renderer.IRenderer) {
 	size := sprite.size
-		.scale(arg.scale)
 
 	pos := sprite.position
-		.scale(arg.scale)
 		.sub(sprite.origin.Vector2.multiply(size))
-		.add(arg.offset)
 
-	arg.backend.draw_image_with_config(
-		texture:       sprite.textures[0]
-		position:      pos
-		origin:        sprite.origin
-		origin_offset: sprite.origin_offset
-		size:          size
-		color:         sprite.color
-		z_index:       sprite.z_index
-		angle:         sprite.angle
-		effects:       sprite.effects
+	graphics.draw_image(
+		image:    sprite.textures[0]
+		position: pos
+		origin:   sprite.origin
+		// origin_offset: sprite.origin_offset
+		size: size
+		// color:         sprite.color
+		// z_index:       sprite.z_index
+		rotation: sprite.angle
+		// effects:       sprite.effects
 	)
 
 	// Debug
