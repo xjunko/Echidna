@@ -31,6 +31,15 @@ pub fn Color.from_rgba[T](r T, g T, b T, a T) Color[T] {
 	}
 }
 
+@[args; params]
+pub struct ImageDrawParameter {
+pub mut:
+	image    &resource.Image     @[required]
+	position vector.Vector2[f32] @[required]
+	size     vector.Vector2[f32]
+	rotation f32
+}
+
 pub interface IRenderer {
 mut:
 	initialize()
@@ -47,5 +56,5 @@ mut:
 	set_color(ColorU8)
 
 	create_image(string, bool, bool) &resource.Image
-	draw_image(&resource.Image)
+	draw_image(&ImageDrawParameter)
 }
