@@ -129,6 +129,24 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f32], si
 	sgl.end()
 }
 
+pub fn (mut gl_graphic OpenGLGraphic) draw_image(image &resource.Image) {
+	gl_img := image as OpenGLImage
+
+	sgl.enable_texture()
+	sgl.texture(gl_img.s_image, gl_img.s_sampler)
+
+	sgl.begin_quads()
+	sgl.c4b(255, 255, 255, 255)
+	{
+		sgl.v3f_t2f(0, 0, 0, 0, 0)
+		sgl.v3f_t2f(gl_img.width / 2, 0, 0, 1, 0)
+		sgl.v3f_t2f(gl_img.width / 2, gl_img.height / 2, 0, 1, 1)
+		sgl.v3f_t2f(0, gl_img.height / 2, 0, 0, 1)
+	}
+	sgl.end()
+	sgl.disable_texture()
+}
+
 pub fn (mut gl_graphic OpenGLGraphic) set_bg_color(color ColorU8) {
 	gl_graphic.pass = gfx.Pass{
 		action:    gfx.create_clear_pass_action(color.r, color.g, color.b, 1.0)

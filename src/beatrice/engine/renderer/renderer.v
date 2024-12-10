@@ -47,4 +47,5 @@ mut:
 	set_color(ColorU8)
 
 	create_image(string, bool, bool) &resource.Image
+	draw_image(&resource.Image)
 }
