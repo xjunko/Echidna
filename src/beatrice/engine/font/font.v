@@ -3,6 +3,7 @@ module font
 import os
 import fontstash
 import sokol.sfons
+import beatrice.math.vector
 import beatrice.engine.renderer
 
 const c_fonts = {
@@ -13,6 +14,7 @@ const c_fonts = {
 }
 
 const c_default_font = 'Tahoma'
+const c_default_font_size = 32.0
 
 pub struct Font {
 pub mut:
@@ -45,17 +47,18 @@ pub fn (mut fonts Fonts) load_font(font Font) {
 @[args; params]
 pub struct TextDrawParams {
 pub mut:
-	text  string @[required]
-	size  f32 = 32.0
-	r     u8  = 255
-	g     u8  = 255
-	b     u8  = 255
-	align int
+	text     string @[required]
+	position vector.Vector2[f32]
+	size     vector.Vector2[f32] = vector.Vector2[f32]{c_default_font_size, c_default_font_size}
+	r        u8                  = 255
+	g        u8                  = 255
+	b        u8                  = 255
+	align    int
 }
 
 pub fn (mut fonts Fonts) draw_text(mut graphics renderer.IRenderer, args TextDrawParams) {
 	fonts.fons.set_font(fonts.fonts[c_default_font].id)
-	fonts.fons.set_size(1.0 * args.size)
+	fonts.fons.set_size(1.0 * args.size.x)
 	fonts.fons.set_align(0)
 	fonts.fons.set_color(sfons.rgba(args.r, args.g, args.b, 255))
 	fonts.fons.draw_text(100, 100, args.text)
