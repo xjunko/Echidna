@@ -1,6 +1,7 @@
 module renderer
 
 import beatrice.math.vector
+import beatrice.engine.resource
 
 pub type ColorU8 = Color[u8]
 
@@ -44,4 +45,6 @@ mut:
 
 	set_bg_color(ColorU8)
 	set_color(ColorU8)
+
+	create_image(string, bool, bool) &resource.Image
 }
