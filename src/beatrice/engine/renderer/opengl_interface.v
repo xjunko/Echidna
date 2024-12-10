@@ -168,11 +168,69 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 
 		sgl.push_matrix()
 
-		{
-			sgl.translate(x0 + (width / 2), y0 + (height / 2), 0)
-			sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
-			sgl.translate(-x0 - (width / 2), -y0 - (height / 2), 0)
+		// center
+		// {
+		// 	sgl.translate(x0 + (width / 2), y0 + (height / 2), 0)
+		// 	sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+		// 	sgl.translate(-x0 - (width / 2), -y0 - (height / 2), 0)
+		// }
+		// x0 += f32(config.origin_offset.x)
+		// y0 += f32(config.origin_offset.y)
+
+		// kill me
+		match args.origin.typ {
+			// TOP
+			.top_left {
+				sgl.translate(x0, y0, 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0, -y0, 0)
+			}
+			.top_centre {
+				sgl.translate(x0 + (width / 2), y0 - height, 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0 - (width / 2), -y0, 0)
+			}
+			.top_right {
+				sgl.translate(x0 + width, y0 - height, 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0 - width, -y0, 0)
+			}
+			// CENTRE
+			.centre_left {
+				sgl.translate(x0, y0 + (height / 2), 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0, -y0 - (height / 2), 0)
+			}
+			.centre {
+				sgl.translate(x0 + (width / 2), y0 + (height / 2), 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0 - (width / 2), -y0 - (height / 2), 0)
+			}
+			.centre_right {
+				sgl.translate(x0 + width, y0 + (height / 2), 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0 - width, -y0 - (height / 2), 0)
+			}
+			// BOTTOM
+			.bottom_left {
+				sgl.translate(x0, y0 + height, 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0, -y0 - height, 0)
+			}
+			.bottom_centre {
+				sgl.translate(x0 + (width / 2), y0 + height, 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0 - (width / 2), -y0 - height, 0)
+			}
+			.bottom_right {
+				sgl.translate(x0 + width, y0 + height, 0)
+				sgl.rotate(sgl.rad(f32(args.rotation)), 0, 0, 1)
+				sgl.translate(-x0 - width, -y0 - height, 0)
+			}
 		}
+
+		// x0 -= f32(config.origin_offset.x)
+		// y0 -= f32(config.origin_offset.y)
 	}
 
 	sgl.begin_quads()
