@@ -45,3 +45,15 @@ pub fn (mut manager ResourceManager) load_image(path string, name string) &resou
 	manager.images[name] = img
 	return img
 }
+
+pub fn (mut manager ResourceManager) load_image_no_name(path string) &resource.Image {
+	if path.len > 0 {
+		if in_cache := manager.images[path] {
+			return in_cache
+		}
+	}
+
+	mut img := manager.engine.graphics.create_image(path, true, true)
+	manager.images[path] = img
+	return img
+}
