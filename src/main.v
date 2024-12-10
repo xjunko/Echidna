@@ -1,8 +1,8 @@
 module main
 
 import sdl
-import beatrice.engine { Engine }
-import beatrice.engine.platform { SDLEnviroment }
+import beatrice.engine
+import beatrice.engine.platform
 
 fn main_sdl() {
 	// sdl boilerplate
@@ -32,9 +32,9 @@ fn main_sdl() {
 	sdl.show_window(s_window)
 	sdl.raise_window(s_window)
 
-	mut sdl_enviroment := SDLEnviroment.create(s_window)
+	mut sdl_enviroment := platform.SDLEnviroment.create(s_window)
 
-	mut current_engine := Engine.create(mut sdl_enviroment)
+	mut current_engine := engine.Engine.create(mut sdl_enviroment)
 	current_engine.load_application()
 
 	// main loop

@@ -22,14 +22,3 @@ pub fn (mut app Application) on_key_up(ev &input.KeyboardEvent) {}
 pub fn (mut app Application) on_shutdown() bool {
 	return true
 }
-
-pub interface IApplication {
-mut:
-	draw(mut graphics renderer.IRenderer)
-	update()
-
-	on_key_down(ev &input.KeyboardEvent)
-	on_key_up(ev &input.KeyboardEvent)
-
-	on_shutdown() bool
-}
