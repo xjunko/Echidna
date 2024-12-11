@@ -3,7 +3,7 @@ module engine
 import sdl
 import beatrice.app.common
 import beatrice.engine.platform
-import beatrice.engine.input { Keyboard }
+import beatrice.engine.input { Keyboard, Mouse }
 import beatrice.engine.renderer { IRenderer }
 import beatrice.util.math.timer
 
@@ -22,6 +22,7 @@ pub mut:
 	limiter &timer.Limiter     = unsafe { nil }
 
 	keyboard         &Keyboard        = unsafe { nil }
+	mouse            &Mouse           = unsafe { nil }
 	graphics         &IRenderer       = unsafe { nil }
 	sound_manager    &SoundManager    = unsafe { nil }
 	resource_manager &ResourceManager = unsafe { nil }
@@ -39,6 +40,7 @@ pub fn (mut engine Engine) initialize() {
 
 	// Input
 	engine.keyboard = Keyboard.create()
+	engine.mouse = Mouse.create()
 
 	engine.graphics = engine.enviroment.create_renderer()
 
@@ -57,7 +59,9 @@ pub fn (mut engine Engine) initialize() {
 pub fn (mut engine Engine) load_application[T](mut t T) {
 	// App entrypoint
 	engine.app = &common.IApplication(t)
+
 	engine.keyboard.add_listener(t)
+	engine.mouse.add_listener(t)
 }
 
 // Events
@@ -76,6 +80,11 @@ pub fn (mut engine Engine) on_update() {
 	// Resources
 	{
 		engine.resource_manager.update()
+	}
+	// Input
+	{
+		engine.keyboard.update()
+		engine.mouse.update()
 	}
 	// Application
 	if !isnil(engine.app) {
@@ -108,6 +117,37 @@ pub fn (mut engine Engine) on_key_up(key sdl.Keycode) {
 
 // Mouse
 pub fn (mut engine Engine) on_mouse_button(event sdl.MouseButtonEvent) {
+	match event.@type {
+		.mousebuttonup {
+			match event.button {
+				1 {
+					engine.mouse.on_left_change(false)
+				}
+				2 {
+					engine.mouse.on_middle_change(false)
+				}
+				3 {
+					engine.mouse.on_right_change(false)
+				}
+				else {}
+			}
+		}
+		.mousebuttondown {
+			match event.button {
+				1 {
+					engine.mouse.on_left_change(true)
+				}
+				2 {
+					engine.mouse.on_middle_change(true)
+				}
+				3 {
+					engine.mouse.on_right_change(true)
+				}
+				else {}
+			}
+		}
+		else {}
+	}
 	// engine.debug_log('Mouse button: ${event.button} | Position: ${event.x}, ${event.y}')
 }
 
