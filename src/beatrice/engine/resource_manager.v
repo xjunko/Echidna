@@ -20,20 +20,6 @@ pub fn ResourceManager.create(mut engine Engine) &ResourceManager {
 pub fn (mut manager ResourceManager) update() {
 }
 
-// pub fn (mut manager ResourceManager) find_in_cache[T](name string) !&T {
-// 	$if T is resource.Image {
-// 		for img in manager.images {
-// 			if img.name == name {
-// 				return unsafe { &T(img) }
-// 			}
-// 		}
-// 	} $else {
-// 		panic('Type not supported: ${T}')
-// 	}
-
-// 	return error('Not found!')
-// }
-
 pub fn (mut manager ResourceManager) load_image(path string, name string) &resource.Image {
 	if name.len > 0 {
 		if in_cache := manager.images[name] {

@@ -2,7 +2,6 @@ module resource
 
 pub interface IResourceManager {
 mut:
-	// find_in_cache[T](name string) !&T
 	load_image(path string, name string) &Image
 }
 
