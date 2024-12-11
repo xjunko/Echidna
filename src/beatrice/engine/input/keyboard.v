@@ -7,6 +7,7 @@ mut:
 }
 
 pub struct Keyboard {
+	InputDevice
 pub mut:
 	control_down bool
 	alt_down     bool

@@ -4,6 +4,7 @@ import beatrice.util.math.vector
 import beatrice.engine.renderer
 
 pub struct Mouse {
+	InputDevice
 pub mut:
 	position                vector.Vector2[f64]
 	position_without_offset vector.Vector2[f64]
