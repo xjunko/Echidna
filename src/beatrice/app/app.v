@@ -6,6 +6,7 @@ import beatrice.engine.renderer
 
 pub struct Application {
 	input.KeyboardListener
+	input.MouseListener
 pub mut:
 	c_engine &engine.Engine = unsafe { nil }
 }
