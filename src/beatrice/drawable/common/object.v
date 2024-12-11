@@ -1,4 +1,4 @@
-module object
+module common
 
 import math
 import beatrice.math.vector
@@ -6,7 +6,7 @@ import beatrice.math.timer
 import beatrice.math.transform
 import beatrice.engine.renderer
 
-pub struct GameObject {
+pub struct Object2D {
 mut:
 	texture_size vector.Vector2[f64] = vector.Vector2[f64]{1.0, 1.0} // 1x1 by default, to be replace by the sprite texture size.
 	last_update  f64
@@ -23,7 +23,7 @@ pub mut:
 // Updates
 const hack_time_to_catch_up = 100.0
 
-pub fn (mut object GameObject) update(time f64) {
+pub fn (mut object Object2D) update(time f64) {
 	object.last_update = time
 
 	// TODO: improve this
@@ -37,7 +37,7 @@ pub fn (mut object GameObject) update(time f64) {
 }
 
 // Transforms
-pub fn (mut object GameObject) apply_event(t transform.Transform[f64], time f64) {
+pub fn (mut object Object2D) apply_event(t transform.Transform[f64], time f64) {
 	match t.typ {
 		.move {
 			pos := t.as_vector(time)
@@ -75,7 +75,7 @@ pub fn (mut object GameObject) apply_event(t transform.Transform[f64], time f64)
 	}
 }
 
-pub fn (mut object GameObject) add_transform(t0 transform.Transform[f64]) {
+pub fn (mut object Object2D) add_transform(t0 transform.Transform[f64]) {
 	if t0.before.len != t0.after.len {
 		mut t := t0.clone()
 		t.ensure_both_slots_is_filled_in()
@@ -86,7 +86,7 @@ pub fn (mut object GameObject) add_transform(t0 transform.Transform[f64]) {
 }
 
 // Resets
-pub fn (mut object GameObject) reset_attributes_based_on_transforms() {
+pub fn (mut object Object2D) reset_attributes_based_on_transforms() {
 	mut applied := []transform.TransformType{}
 
 	// This function usually only ran once, so
@@ -113,7 +113,7 @@ pub fn (mut object GameObject) reset_attributes_based_on_transforms() {
 
 // Info
 @[inline]
-pub fn (mut object GameObject) is_available_at(time f64) bool {
+pub fn (mut object Object2D) is_available_at(time f64) bool {
 	// println("${time} | ${object.time}")
 	return time >= object.time.start && time <= object.time.end
 }

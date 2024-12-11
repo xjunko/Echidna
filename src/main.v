@@ -4,6 +4,7 @@ import sdl
 import beatrice.engine
 import beatrice.engine.platform
 import beatrice.app.sample
+// import beatrice.app.kyukurarin
 
 fn main_sdl() {
 	// sdl boilerplate

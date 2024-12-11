@@ -4,7 +4,7 @@ import beatrice.app
 import beatrice.engine
 import beatrice.engine.renderer
 import beatrice.math.vector
-import beatrice.graphic.sprite
+import beatrice.drawable.sprite
 
 pub struct SampleApplication {
 	app.Application

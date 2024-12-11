@@ -1,12 +1,12 @@
 module sprite
 
-import beatrice.component.object
+import beatrice.drawable.common
 import beatrice.math.vector
 import beatrice.engine.resource
 import beatrice.engine.renderer
 
 pub struct Sprite {
-	object.GameObject
+	common.Object2D
 pub mut:
 	textures      []&resource.Image
 	origin        vector.Origin = vector.centre
