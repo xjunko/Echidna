@@ -57,6 +57,8 @@ mut:
 	set_bg_color(ColorU8)
 	set_color(ColorU8)
 
+	set_vsync(bool)
+
 	create_image(string, bool, bool) &resource.Image
 	draw_image(&ImageDrawParameter)
 }

@@ -46,7 +46,6 @@ fn main_sdl() {
 	mut should_close := false
 	for {
 		current_engine.on_start()
-		sdl.gl_set_swap_interval(0)
 
 		evt := sdl.Event{}
 		for 0 < sdl.poll_event(&evt) {

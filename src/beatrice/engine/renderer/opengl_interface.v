@@ -298,6 +298,10 @@ pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
 	sgl.end()
 }
 
+pub fn (mut gl_graphic OpenGLGraphic) set_vsync(vsync bool) {
+	sdl.gl_set_swap_interval(int(vsync))
+}
+
 pub fn (mut gl_graphic OpenGLGraphic) create_image(path string, mipmapped bool, keep_in_mem bool) &resource.Image {
 	return OpenGLImage.create(path, mipmapped, keep_in_mem)
 }
