@@ -28,6 +28,8 @@ Not all graphic/os specific functions are implemented, it will be added only whe
 
 https://github.com/xjunko/kyu-kurarin
 
+![image](https://github.com/user-attachments/assets/3aba9954-5792-4681-81ba-afc37e3338bd)
+
 ## Building
 - A simple `v -cc clang .` should work.
 
