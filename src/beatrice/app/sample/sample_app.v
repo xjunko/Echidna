@@ -2,7 +2,6 @@ module sample
 
 import beatrice.app
 import beatrice.engine
-import beatrice.engine.font
 import beatrice.engine.renderer
 import beatrice.math.vector
 import beatrice.graphic.sprite
@@ -10,8 +9,6 @@ import beatrice.graphic.sprite
 pub struct SampleApplication {
 	app.Application
 mut:
-	fonts &font.Fonts = unsafe { nil }
-
 	manager &sprite.Manager = unsafe { nil }
 	spr     &sprite.Sprite  = unsafe { nil }
 
@@ -29,7 +26,6 @@ pub fn SampleApplication.create(mut c_engine engine.Engine) &SampleApplication {
 }
 
 pub fn (mut sample_app SampleApplication) initialize() {
-	sample_app.fonts = font.Fonts.create()
 	sample_app.manager = sprite.new_manager()
 
 	sample_app.spr = &sprite.Sprite{
@@ -54,8 +50,6 @@ pub fn (mut sample_app SampleApplication) update() {
 }
 
 pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) {
-	sample_app.fonts.flush()
-
 	// Background
 	graphics.set_color(r: 25, g: 25, b: 25)
 
@@ -76,14 +70,17 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 	}
 	// Text
 	{
+		mut font := sample_app.c_engine.resource_manager.get_font('Default')
+
 		graphics.draw_rect(vector.Vector2[f64]{100, 100}, vector.Vector2[f64]{200, 50},
 			renderer.Color.from_rgb[u8](0, 0, 0))
-		sample_app.fonts.draw_text(mut graphics,
+
+		graphics.draw_text(font,
 			text:     'Hello, World!'
 			position: vector.Vector2[f64]{100, 150}
 		)
 
-		sample_app.fonts.draw_text(mut graphics,
+		graphics.draw_text(font,
 			text:     'HIIII!!!!!!'
 			size:     vector.Vector2[f64]{64, 64}
 			position: vector.Vector2[f64]{700, 600}
@@ -114,6 +111,8 @@ pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRender
 	fps_string := '${int(fps)} fps'
 	ms_string := '${sample_app.last_delta:.1f} ms'
 
+	mut font := sample_app.c_engine.resource_manager.get_font('Default')
+
 	{
 		mut color := renderer.Color.from_rgb[u8](255, 255, 255)
 
@@ -121,7 +120,8 @@ pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRender
 			color.b = 0
 			color.g = 0
 		}
-		sample_app.fonts.draw_text(mut graphics,
+
+		graphics.draw_text(font,
 			text:           fps_string
 			color:          color
 			align:          .right
@@ -131,7 +131,7 @@ pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRender
 			outline:        true
 		)
 
-		sample_app.fonts.draw_text(mut graphics,
+		graphics.draw_text(font,
 			text:           ms_string
 			color:          color
 			align:          .right

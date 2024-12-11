@@ -4,6 +4,7 @@ import sdl
 import sokol.sgl
 import sokol.gfx
 import beatrice.math.vector
+import beatrice.engine.font
 import beatrice.engine.resource
 
 pub struct OpenGLPipeline {
@@ -13,8 +14,6 @@ pub mut:
 }
 
 fn (mut gl_pipeline OpenGLPipeline) initialize() {
-	// FIXME(FireRedz): this looks kinda funny, find a better way to initialize pipeline.
-
 	// Alpha
 	mut alpha_pipdesc := gfx.PipelineDesc{}
 	unsafe { vmemset(&alpha_pipdesc, 0, int(sizeof(alpha_pipdesc))) }
@@ -123,6 +122,29 @@ pub fn (mut gl_graphic OpenGLGraphic) end() {
 	sdl.gl_swap_window(gl_graphic.window)
 }
 
+pub fn (mut gl_graphic OpenGLGraphic) set_bg_color(color ColorU8) {
+	gl_graphic.pass = gfx.Pass{
+		action:    gfx.create_clear_pass_action(color.r, color.g, color.b, 1.0)
+		swapchain: glue_swapchain()
+	}
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
+	sgl.begin_quads()
+	{
+		sgl.c3b(color.r, color.g, color.b)
+		sgl.v2f(0, 0)
+		sgl.v2f(1280, 0)
+		sgl.v2f(1280, 720)
+		sgl.v2f(0, 720)
+	}
+	sgl.end()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) set_vsync(vsync bool) {
+	sdl.gl_set_swap_interval(int(vsync))
+}
+
 pub fn (mut gl_graphic OpenGLGraphic) draw_pixel(position vector.Vector2[f64], color Color[u8], size f64) {
 	sgl.begin_points()
 	{
@@ -166,6 +188,10 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f64], si
 		sgl.v2f(f32(position.x), f32(position.y + size.y))
 	}
 	sgl.end()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) create_image(path string, mipmapped bool, keep_in_mem bool) &resource.Image {
+	return OpenGLImage.create(path, mipmapped, keep_in_mem)
 }
 
 // Refer to V's gg for the original implementation of this function
@@ -277,29 +303,10 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 	sgl.disable_texture()
 }
 
-pub fn (mut gl_graphic OpenGLGraphic) set_bg_color(color ColorU8) {
-	gl_graphic.pass = gfx.Pass{
-		action:    gfx.create_clear_pass_action(color.r, color.g, color.b, 1.0)
-		swapchain: glue_swapchain()
+pub fn (mut gl_graphic OpenGLGraphic) draw_text(c_font &font.Font, arg font.TextDrawParams) {
+	if isnil(c_font) {
+		return
 	}
-}
 
-pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
-	sgl.begin_quads()
-	{
-		sgl.c3b(color.r, color.g, color.b)
-		sgl.v2f(0, 0)
-		sgl.v2f(1280, 0)
-		sgl.v2f(1280, 720)
-		sgl.v2f(0, 720)
-	}
-	sgl.end()
-}
-
-pub fn (mut gl_graphic OpenGLGraphic) set_vsync(vsync bool) {
-	sdl.gl_set_swap_interval(int(vsync))
-}
-
-pub fn (mut gl_graphic OpenGLGraphic) create_image(path string, mipmapped bool, keep_in_mem bool) &resource.Image {
-	return OpenGLImage.create(path, mipmapped, keep_in_mem)
+	unsafe { c_font.draw(arg) }
 }

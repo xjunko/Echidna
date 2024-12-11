@@ -1,6 +1,7 @@
 module renderer
 
 import beatrice.math.vector
+import beatrice.engine.font
 import beatrice.engine.resource
 
 pub type ColorU8 = Color[u8]
@@ -59,6 +60,8 @@ mut:
 
 	set_vsync(bool)
 
-	create_image(string, bool, bool) &resource.Image
 	draw_image(&ImageDrawParameter)
+	create_image(string, bool, bool) &resource.Image
+
+	draw_text(&font.Font, font.TextDrawParams)
 }

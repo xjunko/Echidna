@@ -88,6 +88,7 @@ pub fn (mut engine Engine) on_update() {
 
 pub fn (mut engine Engine) on_paint() {
 	engine.graphics.begin()
+	engine.resource_manager.fonts.flush()
 
 	if !isnil(engine.app) {
 		engine.app.draw(mut engine.graphics)
