@@ -1,57 +1,25 @@
-## Echidna
+# Echidna
 
-a framework-engine-amalgamations-of-sorts for average Junko's and the likes.
+A small and easy to use framework, inspired by [[McEngine]](https://github.com/McKay42/McEngine) by [McKay](https://github.com/McKay42).
 
-## Demos
+This branch is in the middle of rewrite, everything will look scuffed.
 
-- [kyu-kurarin](https://github.com/xjunko/kyu-kurarin-demo): A direct translation of the `きゅうくらりん`'s storyboard to `Echidna`'s sprite system.
+#### Structure
+`/src/beatrice/` contains the source code
+1. `/app/` contains the generic application code using the engine
+2. `/audio/` contains the audio subsystem
+3. `/component/` contains the generic unused/deprecated system
+    - `/component/object/` contains GameObject 
+    - `/component/ui/` contains the UI sytem
+4. `/engine/` contains the core
+    - to be done
+5. `/graphic/` contains the deprecated sprite system
+6. `/math/` contains the mathematical functions
+    - `/math/easing/` contains generic easing function
+    - `/math/timer/` contains generic timing structs
+    - `/math/transform/` contains transformers to be used with animations
+    - `/math/vector` contains generic Vector structs
 
-![image](https://user-images.githubusercontent.com/44401509/209597001-b669f469-3f37-4cf9-a14c-15a2cc26f9c8.png)
+### Building
+a simple `v -cc clang .` should work.
 
-## Compile Flags
-
-- These are the available compile flags, you can use it with `-d FLAG` when compiling. <br/> Do note that some of these are private flags so it might not work.
-
-### Flag: `sprite_debug` <br/>
-
----
-
-- [/src/beatrice/graphic/sprite/manager.v](/src/beatrice/graphic/sprite/manager.v)
-- [/src/beatrice/graphic/sprite/sprite.v](/src/beatrice/graphic/sprite/sprite.v)
-
-### Flag: `backend_gg` <br/>
-
----
-
-- [/src/beatrice/graphic/window/window.v](/src/beatrice/graphic/window/window.v)
-
-### Flag: `backend_sdl` <br/>
-
----
-
-- [/src/beatrice/graphic/window/window.v](/src/beatrice/graphic/window/window.v)
-
-### Flag: `demo_kyu_kurarin [Private]` <br/>
-
----
-
-- [/src/main.v](/src/main.v)
-
-### Flag: `demo_ui [Private]` <br/>
-
----
-
-- [/src/main.v](/src/main.v)
-
-### Flag: `demo_osu [Private]` <br/>
-
----
-
-- [/src/main.v](/src/main.v)
-
-### Flag: `bass_audio_backend [Private]` <br/>
-
----
-
-- [/src/wakasagihime/kyukurarin/main.v](/src/wakasagihime/kyukurarin/main.v)
-- [/src/wakasagihime/osu/main.v](/src/wakasagihime/osu/main.v)
