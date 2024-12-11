@@ -111,9 +111,8 @@ pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRender
 	fps_string := '${int(fps)} fps'
 	ms_string := '${sample_app.last_delta:.1f} ms'
 
-	mut font := sample_app.c_engine.resource_manager.get_font('Default')
-
 	{
+		mut font := sample_app.c_engine.resource_manager.get_font('Default')
 		mut color := renderer.Color.from_rgb[u8](255, 255, 255)
 
 		if fps < 120 {
