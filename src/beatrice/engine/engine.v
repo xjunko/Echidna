@@ -23,7 +23,7 @@ pub mut:
 
 	keyboard         &Keyboard        = unsafe { nil }
 	graphics         &IRenderer       = unsafe { nil }
-	sound            &SoundManager    = unsafe { nil }
+	sound_manager    &SoundManager    = unsafe { nil }
 	resource_manager &ResourceManager = unsafe { nil }
 }
 
@@ -45,7 +45,7 @@ pub fn (mut engine Engine) initialize() {
 	engine.debug_log('[Engine] Initializing Subsystems')
 	{
 		engine.resource_manager = ResourceManager.create(mut engine)
-		engine.sound = SoundManager.create()
+		engine.sound_manager = SoundManager.create()
 
 		engine.graphics.set_vsync(false)
 	}
