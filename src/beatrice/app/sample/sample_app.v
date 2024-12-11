@@ -50,57 +50,49 @@ pub fn (mut sample_app SampleApplication) update() {
 }
 
 pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) {
-	// Background
 	graphics.set_color(r: 25, g: 25, b: 25)
 
-	// Draw sprites
-	// sample_app.manager.draw(mut graphics)
+	// Rotating rect
+	// TODO
 
-	// Images
-	{
-		img := sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
-			'teto')
+	font := sample_app.c_engine.resource_manager.get_font('Default')
 
-		graphics.draw_image(
-			image:    img
-			position: vector.Vector2[f64]{100, 100}
-			rotation: f32(sample_app.c_engine.time.time) / 10.0
-			origin:   vector.centre
-		)
-	}
-	// Text
-	{
-		mut font := sample_app.c_engine.resource_manager.get_font('Default')
+	graphics.draw_text(font,
+		text:     'Title'
+		color:    renderer.Color.from_rgb[u8](255, 255, 255)
+		size:     vector.Vector2[f64]{80, 80}
+		position: vector.Vector2[f64]{70, 240 - 24}
+	)
 
-		graphics.draw_rect(vector.Vector2[f64]{100, 100}, vector.Vector2[f64]{200, 50},
-			renderer.Color.from_rgb[u8](0, 0, 0))
+	graphics.draw_text(font,
+		text:     'New Game'
+		color:    renderer.Color.from_rgb[u8](255, 255, 255)
+		size:     vector.Vector2[f64]{24, 24}
+		position: vector.Vector2[f64]{70 + 10, 240 + 64 + 32}
+	)
 
-		graphics.draw_text(font,
-			text:     'Hello, World!'
-			position: vector.Vector2[f64]{100, 150}
-		)
+	graphics.draw_text(font,
+		text:     'Load Game'
+		color:    renderer.Color.from_rgb[u8](255, 255, 255)
+		size:     vector.Vector2[f64]{24, 24}
+		position: vector.Vector2[f64]{70 + 10, 240 + 64 + 32 + 24}
+	)
 
-		graphics.draw_text(font,
-			text:     'HIIII!!!!!!'
-			size:     vector.Vector2[f64]{64, 64}
-			position: vector.Vector2[f64]{700, 600}
-		)
-	}
-	// Geometry
-	{
-		graphics.draw_rect(vector.Vector2[f64]{100, 100}, vector.Vector2[f64]{32, 32},
-			renderer.Color.from_rgb[u8](255, 0, 0))
+	graphics.draw_text(font,
+		text:     'Options'
+		color:    renderer.Color.from_rgb[u8](255, 255, 255)
+		size:     vector.Vector2[f64]{24, 24}
+		position: vector.Vector2[f64]{70 + 10, 240 + 64 + 32 + 24 + 24}
+	)
 
-		graphics.draw_rect_outline(vector.Vector2[f64]{640 - 100 / 2, 360 - 64 / 2}, vector.Vector2[f64]{100, 64},
-			renderer.Color.from_rgb[u8](255, 255, 255))
+	graphics.draw_text(font,
+		text:     'Exit'
+		color:    renderer.Color.from_rgb[u8](255, 255, 255)
+		size:     vector.Vector2[f64]{24, 24}
+		position: vector.Vector2[f64]{70 + 10, 240 + 64 + 32 + 24 + 24 + 24}
+	)
 
-		graphics.draw_line(vector.Vector2[f64]{1280, 720}, vector.Vector2[f64]{640, 360},
-			renderer.Color.from_rgb[u8](0, 255, 0))
-	}
-	// FPS
-	{
-		sample_app.draw_fps(mut graphics)
-	}
+	sample_app.draw_fps(mut graphics)
 }
 
 pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRenderer) {
