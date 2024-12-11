@@ -58,6 +58,12 @@ mut:
 	set_bg_color(ColorU8)
 	set_color(ColorU8)
 
+	push_matrix()
+	pop_matrix()
+
+	translate(f32, f32, f32)
+	rotate(f32)
+
 	set_vsync(bool)
 
 	draw_image(&ImageDrawParameter)

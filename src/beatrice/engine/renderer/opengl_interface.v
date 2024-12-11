@@ -145,6 +145,22 @@ pub fn (mut gl_graphic OpenGLGraphic) set_vsync(vsync bool) {
 	sdl.gl_set_swap_interval(int(vsync))
 }
 
+pub fn (mut gl_graphic OpenGLGraphic) push_matrix() {
+	sgl.push_matrix()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) pop_matrix() {
+	sgl.pop_matrix()
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) translate(x f32, y f32, z f32) {
+	sgl.translate(x, y, z)
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) rotate(angle f32) {
+	sgl.rotate(angle, 0, 0, 1)
+}
+
 pub fn (mut gl_graphic OpenGLGraphic) draw_pixel(position vector.Vector2[f64], color Color[u8], size f64) {
 	sgl.begin_points()
 	{
