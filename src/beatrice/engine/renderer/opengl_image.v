@@ -1,7 +1,7 @@
 module renderer
 
 import stbi
-import sokol.gfx
+import thirdparty.sokol.gfx
 import beatrice.engine.resource
 
 pub struct OpenGLImage {

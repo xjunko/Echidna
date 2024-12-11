@@ -1,7 +1,7 @@
 module ui
 
 import gx
-import sokol.sgl
+import thirdparty.sokol.sgl
 import beatrice.component.object
 import beatrice.component.ui.microui
 import beatrice.component.ui.microui.enums

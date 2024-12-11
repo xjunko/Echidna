@@ -2,7 +2,7 @@ module font
 
 import os
 import fontstash
-import sokol.sfons
+import thirdparty.sokol.sfons
 import beatrice.util.math.vector
 
 const c_fonts = {

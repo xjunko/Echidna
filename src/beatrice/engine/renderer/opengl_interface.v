@@ -1,8 +1,9 @@
 module renderer
 
 import sdl
-import sokol.sgl
-import sokol.gfx
+import thirdparty.sokol.sgl
+import thirdparty.sokol.gfx
+// import thirdparty.sokol_gp
 import beatrice.util.math.vector
 import beatrice.engine.font
 import beatrice.engine.resource
