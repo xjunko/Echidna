@@ -12,6 +12,7 @@ Not all graphic/os specific functions are implemented, it will be added only whe
 2. `/engine/` contains the core
     - `/font/` contains the font system
     - `/input/` contains input devices
+    - `/entrypoint/` contains enviroment specific main entrypoint
     - `/platform/` contains platform wrappers
     - `/renderer/` contains renderer specific code
 3. `/drawable/` contains basic drawable structs
