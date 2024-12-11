@@ -42,6 +42,12 @@ pub fn (mut mouse Mouse) draw(mut graphics renderer.IRenderer) {
 }
 
 pub fn (mut mouse Mouse) update() {
+	mouse.delta.x = 0
+	mouse.delta.y = 0
+
+	mouse.raw_delta = mouse.raw_delta_actual
+	mouse.raw_delta_actual.x = 0
+	mouse.raw_delta_actual.y = 0
 }
 
 //
@@ -71,6 +77,13 @@ pub fn (mut mouse Mouse) on_right_change(down bool) {
 
 	for i := 0; i < mouse.listeners.len; i++ {
 		mouse.listeners[i].on_right_change(mouse.right_down)
+	}
+}
+
+// Move
+pub fn (mut mouse Mouse) on_mouse_raw_move(deltax f64, deltay f64) {
+	if deltax != 0.0 || deltay != 0.0 {
+		mouse.raw_delta_actual.add(vector.Vector2[f64]{deltax, deltay})
 	}
 }
 

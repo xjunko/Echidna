@@ -152,6 +152,7 @@ pub fn (mut engine Engine) on_mouse_button(event sdl.MouseButtonEvent) {
 }
 
 pub fn (mut engine Engine) on_mouse_motion(event sdl.MouseMotionEvent) {
+	engine.mouse.on_mouse_raw_move(f64(event.xrel), f64(event.yrel))
 	// engine.debug_log('Position: ${event.x}, ${event.y}')
 }
 
