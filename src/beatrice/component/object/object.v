@@ -6,7 +6,6 @@ import beatrice.math.timer
 import beatrice.math.transform
 import beatrice.engine.renderer
 
-// GameObject is a common object idk what to say tbh, its a common thing.
 pub struct GameObject {
 mut:
 	texture_size vector.Vector2[f64] = vector.Vector2[f64]{1.0, 1.0} // 1x1 by default, to be replace by the sprite texture size.

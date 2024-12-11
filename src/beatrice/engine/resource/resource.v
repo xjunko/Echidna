@@ -2,6 +2,11 @@ module resource
 
 import os
 
+pub interface IResourceManager {
+mut:
+	load_image(path string, name string) &Image
+}
+
 pub struct Resource {
 pub mut:
 	name string

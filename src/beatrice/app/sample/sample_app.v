@@ -3,7 +3,6 @@ module sample
 import beatrice.app
 import beatrice.engine
 import beatrice.engine.font
-import beatrice.engine.input
 import beatrice.engine.renderer
 import beatrice.math.vector
 import beatrice.graphic.sprite

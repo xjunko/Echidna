@@ -1,5 +1,17 @@
 module resource
 
+pub interface Image {
+mut:
+	name string
+
+	channels int
+	width    int
+	height   int
+
+	has_alpha bool
+	created   bool
+}
+
 pub struct ImageResource {
 	Resource
 pub mut:

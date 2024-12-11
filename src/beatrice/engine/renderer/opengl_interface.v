@@ -1,10 +1,8 @@
 module renderer
 
 import sdl
-import sokol
 import sokol.sgl
 import sokol.gfx
-import sokol.sapp
 import beatrice.math.vector
 import beatrice.engine.resource
 
