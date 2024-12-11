@@ -1,11 +1,11 @@
 module engine
 
 import sdl
-import beatrice.math.timer
+import beatrice.app.common
 import beatrice.engine.platform
 import beatrice.engine.input { Keyboard }
 import beatrice.engine.renderer { IRenderer }
-import beatrice.app.common
+import beatrice.util.math.timer
 
 const c_default_fps = 9999
 

@@ -1,6 +1,6 @@
 module input
 
-import beatrice.math.vector
+import beatrice.util.math.vector
 import beatrice.engine.renderer
 
 pub struct Mouse {

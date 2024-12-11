@@ -3,7 +3,7 @@ module sample
 import beatrice.app
 import beatrice.engine
 import beatrice.engine.renderer
-import beatrice.math.vector
+import beatrice.util.math.vector
 import beatrice.drawable.sprite
 
 pub struct SampleApplication {

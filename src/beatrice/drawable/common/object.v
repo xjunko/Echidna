@@ -1,10 +1,10 @@
 module common
 
 import math
-import beatrice.math.vector
-import beatrice.math.timer
-import beatrice.math.transform
 import beatrice.engine.renderer
+import beatrice.util.math.vector
+import beatrice.util.math.timer
+import beatrice.util.math.transform
 
 pub struct Object2D {
 mut:

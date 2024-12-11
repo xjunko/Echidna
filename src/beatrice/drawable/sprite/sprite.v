@@ -1,7 +1,7 @@
 module sprite
 
 import beatrice.drawable.common
-import beatrice.math.vector
+import beatrice.util.math.vector
 import beatrice.engine.resource
 import beatrice.engine.renderer
 

@@ -3,7 +3,7 @@ module font
 import os
 import fontstash
 import sokol.sfons
-import beatrice.math.vector
+import beatrice.util.math.vector
 
 const c_fonts = {
 	'Tahoma': Font{
