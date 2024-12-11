@@ -143,7 +143,3 @@ pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRender
 		)
 	}
 }
-
-pub fn (mut sample_app SampleApplication) on_key_down(ev &input.KeyboardEvent) {
-	println(ev)
-}
