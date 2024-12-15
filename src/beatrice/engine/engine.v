@@ -21,11 +21,11 @@ pub mut:
 	time    &timer.TimeCounter = unsafe { nil }
 	limiter &timer.Limiter     = unsafe { nil }
 
-	keyboard         &Keyboard        = unsafe { nil }
-	mouse            &Mouse           = unsafe { nil }
-	graphics         &IRenderer       = unsafe { nil }
-	sound_manager    &SoundManager    = unsafe { nil }
-	resource_manager &ResourceManager = unsafe { nil }
+	keyboard  &Keyboard        = unsafe { nil }
+	mouse     &Mouse           = unsafe { nil }
+	graphics  &IRenderer       = unsafe { nil }
+	sounds    &SoundManager    = unsafe { nil }
+	resources &ResourceManager = unsafe { nil }
 }
 
 pub fn (mut engine Engine) debug_log(info string) {
@@ -46,10 +46,10 @@ pub fn (mut engine Engine) initialize() {
 
 	engine.debug_log('[Engine] Initializing Subsystems')
 	{
-		engine.resource_manager = ResourceManager.create(mut engine)
-		engine.sound_manager = SoundManager.create()
+		engine.resources = ResourceManager.create(mut engine)
+		engine.sounds = SoundManager.create()
 
-		engine.graphics.set_vsync(false)
+		engine.graphics.set_vsync(true)
 	}
 	// Done
 	engine.time.reset()
@@ -79,7 +79,7 @@ pub fn (mut engine Engine) on_update() {
 	}
 	// Resources
 	{
-		engine.resource_manager.update()
+		engine.resources.update()
 	}
 	// Input
 	{
@@ -97,7 +97,7 @@ pub fn (mut engine Engine) on_update() {
 
 pub fn (mut engine Engine) on_paint() {
 	engine.graphics.begin()
-	engine.resource_manager.fonts.flush()
+	engine.resources.fonts.flush()
 
 	if !isnil(engine.app) {
 		engine.app.draw(mut engine.graphics)
