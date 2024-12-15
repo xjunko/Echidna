@@ -7,8 +7,7 @@ import beatrice.engine.resource
 pub struct OpenGLImage {
 	resource.ImageResource
 mut:
-	s_image   gfx.Image
-	s_sampler gfx.Sampler
+	s_image gfx.Image
 pub mut:
 	stb_img stbi.Image
 }
@@ -37,14 +36,6 @@ pub fn OpenGLImage.create(path string, mipmapped bool, keep_in_mem bool) &OpenGL
 
 	img.s_image = gfx.make_image(&img_desc)
 
-	mut smp_desc := gfx.SamplerDesc{
-		min_filter: .linear
-		mag_filter: .linear
-		wrap_u:     .clamp_to_edge
-		wrap_v:     .clamp_to_edge
-	}
-
-	img.s_sampler = gfx.make_sampler(&smp_desc)
 	img.created = true
 
 	return img

@@ -3,7 +3,6 @@ module renderer
 import sdl
 import thirdparty.sokol.sgl
 import thirdparty.sokol.gfx
-// import thirdparty.sokol_gp
 import beatrice.util.math.vector
 import beatrice.engine.font
 import beatrice.engine.resource
@@ -51,6 +50,10 @@ mut:
 
 	pass     gfx.Pass
 	pipeline &OpenGLPipeline = unsafe { nil }
+
+	common_img_sampler gfx.Sampler
+
+	resolution vector.Vector2[int]
 }
 
 pub fn glue_environment() gfx.Environment {
@@ -77,7 +80,8 @@ pub fn glue_swapchain() gfx.Swapchain {
 pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	// setup sokol-gfx
 	desc := gfx.Desc{
-		environment: glue_environment()
+		environment:     glue_environment()
+		image_pool_size: 512
 	}
 
 	gfx.setup(&desc)
@@ -88,7 +92,7 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	sgl.setup(&sgl_desc)
 
 	// pass-action
-	mut action := gfx.create_clear_pass_action(0.0, 0.0, 0.0, 1.0)
+	mut action := gfx.create_clear_pass_action(0.25, 0.25, 0.25, 1.0)
 	gl_graphic.pass = gfx.Pass{
 		action:    action
 		swapchain: glue_swapchain()
@@ -97,6 +101,16 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	// pipelines
 	gl_graphic.pipeline = &OpenGLPipeline{}
 	gl_graphic.pipeline.initialize()
+
+	// sampler
+	sampler_desc := gfx.SamplerDesc{
+		min_filter: .linear
+		mag_filter: .linear
+		wrap_u:     .clamp_to_edge
+		wrap_v:     .clamp_to_edge
+	}
+
+	gl_graphic.common_img_sampler = gfx.make_sampler(&sampler_desc)
 }
 
 pub fn OpenGLGraphic.create(window &sdl.Window) &OpenGLGraphic {
@@ -110,10 +124,14 @@ pub fn OpenGLGraphic.create(window &sdl.Window) &OpenGLGraphic {
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) begin() {
+	sdl.get_window_size(gl_graphic.window, &gl_graphic.resolution.x, &gl_graphic.resolution.y)
+	gl_graphic.pass.swapchain.width = gl_graphic.resolution.x
+	gl_graphic.pass.swapchain.height = gl_graphic.resolution.y
+
 	gfx.begin_pass(&gl_graphic.pass)
 	sgl.defaults()
 	sgl.matrix_mode_projection()
-	sgl.ortho(0.0, 1280, 720, 0.0, -1.0, 1.0)
+	sgl.ortho(0.0, gl_graphic.resolution.x, gl_graphic.resolution.y, 0.0, -1.0, 1.0)
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) end() {
@@ -124,10 +142,7 @@ pub fn (mut gl_graphic OpenGLGraphic) end() {
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) set_bg_color(color ColorU8) {
-	gl_graphic.pass = gfx.Pass{
-		action:    gfx.create_clear_pass_action(color.r, color.g, color.b, 1.0)
-		swapchain: glue_swapchain()
-	}
+	gl_graphic.pass.action = gfx.create_clear_pass_action(color.r, color.g, color.b, 1.0)
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
@@ -135,9 +150,9 @@ pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
 	{
 		sgl.c3b(color.r, color.g, color.b)
 		sgl.v2f(0, 0)
-		sgl.v2f(1280, 0)
-		sgl.v2f(1280, 720)
-		sgl.v2f(0, 720)
+		sgl.v2f(gl_graphic.resolution.x, gl_graphic.resolution.y)
+		sgl.v2f(gl_graphic.resolution.x, gl_graphic.resolution.y)
+		sgl.v2f(0, gl_graphic.resolution.y)
 	}
 	sgl.end()
 }
@@ -243,7 +258,7 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 
 	sgl.load_pipeline(gl_graphic.pipeline.alpha)
 	sgl.enable_texture()
-	sgl.texture(gl_img.s_image, gl_img.s_sampler)
+	sgl.texture(gl_img.s_image, gl_graphic.common_img_sampler)
 
 	if rotation {
 		width := f32(image_size.x)
