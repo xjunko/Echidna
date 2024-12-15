@@ -17,12 +17,18 @@ pub mut:
 }
 
 pub fn (mut sprite Sprite) draw(mut graphics renderer.IRenderer) {
-	size := sprite.size.scale(1.5)
+	mut size := sprite.size
 
-	pos := sprite.position
-		.scale(1.5)
+	mut pos := sprite.position
 		.sub(sprite.origin.Vector2.multiply(size))
-		.add(vector.Vector2[f64]{159.99999999999972, -2.8421709430404007e-13})
+
+	$if storyboard ? {
+		size = sprite.size.scale(1.5)
+		pos = sprite.position
+			.scale(1.5)
+			.sub(sprite.origin.Vector2.multiply(size))
+			.add(vector.Vector2[f64]{159.99999999999972, -2.8421709430404007e-13})
+	}
 
 	graphics.draw_image(
 		image:    sprite.textures[0]
