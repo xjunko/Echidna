@@ -81,7 +81,7 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	// setup sokol-gfx
 	desc := gfx.Desc{
 		environment:     glue_environment()
-		image_pool_size: 512
+		image_pool_size: 256 // increase this if youre expecting to load a lot of images
 	}
 
 	gfx.setup(&desc)
