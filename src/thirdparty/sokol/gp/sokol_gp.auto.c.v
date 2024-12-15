@@ -1,25 +1,10 @@
-module sokol_gp
+module gp
 
-import thirdparty.gfx
-
-#flag -I @VMODROOT/C/
-#include "sokol_gp.h"
-
-//
-// sokol_gp.h
-//
-
-// C typedef aliases used
-// sgp_point -> sgp_vec2 -> Vec2
+import thirdparty.sokol.gfx
 
 pub const sokol_gp_included = 1
 pub const batch_optimizer_depth = 8
-
-// Number of uniform floats (4-bytes) slots that can be set in a shader.
-// Increase this value if you need to use shader with many uniforms.
-pub const uniform_content_slots = 8
-
-// Number of texture slots that can be bound in a pipeline.
+pub const uniform_content_slots = 4
 pub const texture_slots = 4
 
 // SGPError is C.sgp_error
@@ -44,18 +29,13 @@ pub enum SGPError {
 
 // BlendMode is C.sgp_blend_mode
 pub enum BlendMode {
-	@none = C.SGP_BLENDMODE_NONE // 0, No blending
+	@none = C.SGP_BLENDMODE_NONE // 0, No blending.
 	// dstRGBA = srcRGBA
 	blend = C.SGP_BLENDMODE_BLEND // Alpha blending.
 	// dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
 	// dstA = srcA + (dstA * (1-srcA))
-	blend_premultiplied = C.SGP_BLENDMODE_BLEND_PREMULTIPLIED // Pre-multiplied alpha blending.
-	// dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
-	add = C.SGP_BLENDMODE_ADD // Additive blending.
+	add = C.SGP_BLENDMODE_ADD // Color add.
 	// dstRGB = (srcRGB * srcA) + dstRGB
-	// dstA = dstA
-	add_premultiplied = C.SGP_BLENDMODE_ADD_PREMULTIPLIED // Pre-multiplied additive blending.
-	// dstRGB = srcRGB + dstRGB
 	// dstA = dstA
 	mod = C.SGP_BLENDMODE_MOD // Color modulate.
 	// dstRGB = srcRGB * dstRGB
@@ -70,12 +50,6 @@ pub enum BlendMode {
 pub enum VsAttrLocation {
 	coord = C.SGP_VS_ATTR_COORD // 0,
 	color = C.SGP_VS_ATTR_COLOR // 1,
-}
-
-// UniformSlot is C.sgp_uniform_slot
-pub enum UniformSlot {
-	vertex   = C.SGP_UNIFORM_SLOT_VERTEX   // 0,
-	fragment = C.SGP_UNIFORM_SLOT_FRAGMENT // 1,
 }
 
 @[typedef]
@@ -186,19 +160,10 @@ pub mut:
 pub type Vertex = C.sgp_vertex
 
 @[typedef]
-pub union C.sgp_uniform_data {
-	// TODO 	floats [SGP_UNIFORM_CONTENT_SLOTS]f32
-	// TODO uint8_t bytes[SGP_UNIFORM_CONTENT_SLOTS* sizeof(float)]
-}
-
-pub type UniformData = C.sgp_uniform_data
-
-@[typedef]
 pub struct C.sgp_uniform {
 pub mut:
-	vs_size u16
-	fs_size u16
-	data    UniformData
+	size u32
+	// TODO 	content [SGP_UNIFORM_CONTENT_SLOTS]f32
 }
 
 pub type Uniform = C.sgp_uniform
@@ -240,9 +205,9 @@ pub struct C.sgp_desc {
 pub mut:
 	max_vertices u32
 	max_commands u32
-	color_format C.sg_pixel_format // Color format for creating pipelines, defaults to the same as the Sokol GFX context.
-	depth_format C.sg_pixel_format // Depth format for creating pipelines, defaults to the same as the Sokol GFX context.
-	sample_count int               // Sample count for creating pipelines, defaults to the same as the Sokol GFX context.
+	color_format gfx.PixelFormat // Color format for creating pipelines, defaults to the same as the Sokol GFX context.
+	depth_format gfx.PixelFormat // Depth format for creating pipelines, defaults to the same as the Sokol GFX context.
+	sample_count int             // Sample count for creating pipelines, defaults to the same as the Sokol GFX context.
 }
 
 pub type Desc = C.sgp_desc
@@ -250,11 +215,11 @@ pub type Desc = C.sgp_desc
 @[typedef]
 pub struct C.sgp_pipeline_desc {
 pub mut:
-	shader         C.sg_shader       // Sokol shader.
+	shader         gfx.Shader        // Sokol shader.
 	primitive_type gfx.PrimitiveType // Draw primitive type (triangles, lines, points, etc). Default is triangles.
 	blend_mode     BlendMode         // Color blend mode. Default is no blend.
-	color_format   C.sg_pixel_format // Color format, defaults to the value used when creating Sokol GP context.
-	depth_format   C.sg_pixel_format // Depth format, defaults to the value used when creating Sokol GP context.
+	color_format   gfx.PixelFormat   // Color format, defaults to the value used when creating Sokol GP context.
+	depth_format   gfx.PixelFormat   // Depth format, defaults to the value used when creating Sokol GP context.
 	sample_count   int               // Sample count, defaults to the value used when creating Sokol GP context.
 	has_vs_color   bool              // If true, the current color state will be passed as an attribute to the vertex shader.
 }
@@ -436,12 +401,12 @@ pub fn reset_pipeline() {
 	C.sgp_reset_pipeline()
 }
 
-// C: `SOKOL_GP_API_DECL void sgp_set_uniform(const void* vs_data, uint32_t vs_size, const void *fs_data, uint32_t fs_size); /* Sets uniform buffer for a custom pipeline. */`
-fn C.sgp_set_uniform(const_vs_data voidptr, vs_size u32, const_fs_data voidptr, fs_size u32)
+// C: `SOKOL_GP_API_DECL void sgp_set_uniform(const void* data, uint32_t size);/* Sets uniform buffer for a custom pipeline. */`
+fn C.sgp_set_uniform(const_data voidptr, size u32)
 
 // set_uniform sets uniform buffer for a custom pipeline.
-pub fn set_uniform(const_vs_data voidptr, vs_size u32, const_fs_data voidptr, fs_size u32) {
-	C.sgp_set_uniform(const_vs_data, vs_size, const_fs_data, fs_size)
+pub fn set_uniform(const_data voidptr, size u32) {
+	C.sgp_set_uniform(const_data, size)
 }
 
 // C: `SOKOL_GP_API_DECL void sgp_reset_uniform(void); /* Resets uniform buffer to default (current state color). */`
