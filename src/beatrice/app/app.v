@@ -8,12 +8,12 @@ pub struct Application {
 	input.KeyboardListener
 	input.MouseListener
 pub mut:
-	c_engine &engine.Engine = unsafe { nil }
+	engine &engine.Engine = unsafe { nil }
 }
 
 pub fn Application.create(mut c_engine engine.Engine) &Application {
 	return &Application{
-		c_engine: unsafe { c_engine }
+		engine: unsafe { c_engine }
 	}
 }
 
