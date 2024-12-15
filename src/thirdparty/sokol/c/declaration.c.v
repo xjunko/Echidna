@@ -72,13 +72,14 @@ $if emscripten ? {
 
 // To allow for thirdparty initializing window / acceleration contexts
 // but still be able to use sokol.gfx e.g. SDL+sokol_gfx
-$if !no_sokol_app ? {
-	#include "sokol_app.h"
-}
+// $if !no_sokol_app ? {
+// 	#include "sokol_app.h"
+// }
+
 #define SOKOL_IMPL
 #define SOKOL_NO_DEPRECATED
 #include "sokol_gfx.h"
-// #include "sokol_gp.h"
 #define SOKOL_GL_IMPL
 #include "util/sokol_gl.h"
+#include "sokol_gp.h"
 #include "sokol_v.post.h"
