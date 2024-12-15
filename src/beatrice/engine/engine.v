@@ -49,7 +49,7 @@ pub fn (mut engine Engine) initialize() {
 		engine.resources = ResourceManager.create(mut engine)
 		engine.sounds = SoundManager.create()
 
-		engine.graphics.set_vsync(true)
+		engine.graphics.set_vsync(false)
 	}
 	// Done
 	engine.time.reset()
