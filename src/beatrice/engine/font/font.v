@@ -84,6 +84,7 @@ pub mut:
 pub fn (mut font Font) draw(args TextDrawParams) {
 	font.fons.set_size(f32(1.0 * args.size.x))
 	font.fons.set_font(font.id)
+	font.fons.set_align(int(args.align) | int(args.vertical_align))
 
 	if args.shadow {
 		font.fons.set_color(sfons.rgba(0, 0, 0, 255))
@@ -105,8 +106,6 @@ pub fn (mut font Font) draw(args TextDrawParams) {
 	}
 
 	font.fons.set_color(sfons.rgba(args.color.r, args.color.g, args.color.b, args.color.a))
-	font.fons.set_align(int(args.align) | int(args.vertical_align))
-
 	font.fons.draw_text(f32(args.position.x), f32(args.position.y), args.text)
 }
 
