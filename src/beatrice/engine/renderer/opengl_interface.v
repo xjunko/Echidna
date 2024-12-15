@@ -81,7 +81,7 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	// setup sokol-gfx
 	desc := gfx.Desc{
 		environment:     glue_environment()
-		image_pool_size: 256 // increase this if youre expecting to load a lot of images
+		image_pool_size: 128 // increase this if youre expecting to load a lot of images
 	}
 
 	gfx.setup(&desc)
@@ -150,7 +150,7 @@ pub fn (mut gl_graphic OpenGLGraphic) set_color(color ColorU8) {
 	{
 		sgl.c3b(color.r, color.g, color.b)
 		sgl.v2f(0, 0)
-		sgl.v2f(gl_graphic.resolution.x, gl_graphic.resolution.y)
+		sgl.v2f(gl_graphic.resolution.x, 0)
 		sgl.v2f(gl_graphic.resolution.x, gl_graphic.resolution.y)
 		sgl.v2f(0, gl_graphic.resolution.y)
 	}
@@ -226,6 +226,14 @@ pub fn (mut gl_graphic OpenGLGraphic) create_image(path string, mipmapped bool, 
 	return OpenGLImage.create(path, mipmapped, keep_in_mem)
 }
 
+pub fn (mut gl_graphic OpenGLGraphic) create_image_from_size(size vector.Vector2[int], mipmapped bool, keep_in_mem bool) &resource.Image {
+	return OpenGLImage.create_from_size(size, mipmapped, keep_in_mem)
+}
+
+pub fn (mut gl_graphic OpenGLGraphic) create_image_from_atlas(entry &resource.AtlasEntry, atlas &resource.TextureAtlas) &resource.Image {
+	return OpenGLImage.create_from_atlas(entry, atlas)
+}
+
 // Refer to V's gg for the original implementation of this function
 pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 	gl_img := args.image as OpenGLImage
@@ -239,11 +247,11 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_image(args &ImageDrawParameter) {
 		image_size.y = f32(gl_img.height)
 	}
 
-	u0 := f32(0.0)
-	v0 := f32(0.0)
+	u0 := gl_img.u[0]
+	v0 := gl_img.v[0]
 
-	u1 := f32(1.0)
-	v1 := f32(1.0)
+	u1 := gl_img.u[1]
+	v1 := gl_img.v[1]
 
 	mut x0 := f32(image_pos.x)
 	mut y0 := f32(image_pos.y)

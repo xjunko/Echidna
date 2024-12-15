@@ -68,6 +68,8 @@ mut:
 
 	draw_image(&ImageDrawParameter)
 	create_image(string, bool, bool) &resource.Image
+	create_image_from_size(vector.Vector2[int], bool, bool) &resource.Image
+	create_image_from_atlas(&resource.AtlasEntry, &resource.TextureAtlas) &resource.Image
 
 	draw_text(&font.Font, font.TextDrawParams)
 }
