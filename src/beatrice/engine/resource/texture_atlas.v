@@ -110,6 +110,7 @@ pub fn TextureAtlas.create(width int, height int) &TextureAtlas {
 	}
 
 	texture_atlas.atlas = gfx.make_image(&img_desc)
+	texture_atlas.changed = true
 
 	return texture_atlas
 }
