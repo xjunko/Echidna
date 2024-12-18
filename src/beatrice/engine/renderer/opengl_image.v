@@ -34,7 +34,7 @@ pub fn OpenGLImage.create_from_buffer(buffer &u8, width int, height int, channel
 
 	img_desc.data.subimage[0][0] = gfx.Range{
 		ptr:  img.buffer
-		size: usize(sizeof(img.buffer))
+		size: usize(width * height * channels)
 	}
 
 	img.s_image = gfx.make_image(&img_desc)
