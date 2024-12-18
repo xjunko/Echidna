@@ -223,7 +223,7 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f64], si
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) create_image(path string, mipmapped bool, keep_in_mem bool) &resource.Image {
-	return OpenGLImage.create(path, mipmapped, keep_in_mem)
+	return OpenGLImage.create_from_path(path, mipmapped, keep_in_mem)
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) create_image_from_size(size vector.Vector2[int], mipmapped bool, keep_in_mem bool) &resource.Image {

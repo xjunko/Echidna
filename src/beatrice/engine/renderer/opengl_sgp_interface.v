@@ -10,14 +10,6 @@ import beatrice.engine.resource
 
 pub struct SokolGPGraphic {
 	OpenGLGraphic
-mut:
-	window &sdl.Window = unsafe { nil }
-
-	in_scene     bool
-	antialiasing bool
-
-	pass     gfx.Pass
-	pipeline &OpenGLPipeline = unsafe { nil }
 }
 
 pub fn (mut gp_graphic SokolGPGraphic) initialize() {
@@ -55,10 +47,6 @@ pub fn (mut gp_graphic SokolGPGraphic) end() {
 	gp_graphic.OpenGLGraphic.end()
 }
 
-pub fn (mut gp_graphic SokolGPGraphic) set_vsync(vsync bool) {
-	sdl.gl_set_swap_interval(int(vsync))
-}
-
 pub fn (mut gp_graphic SokolGPGraphic) push_matrix() {
 	gp.push_transform()
 }
@@ -86,7 +74,7 @@ pub fn (mut gp_graphic SokolGPGraphic) draw_rect(position vector.Vector2[f64], s
 }
 
 pub fn (mut gp_graphic SokolGPGraphic) create_image(path string, mipmapped bool, keep_in_mem bool) &resource.Image {
-	return OpenGLImage.create(path, mipmapped, keep_in_mem)
+	return OpenGLImage.create_from_path(path, mipmapped, keep_in_mem)
 }
 
 // Refer to V's gg for the original implementation of this function
