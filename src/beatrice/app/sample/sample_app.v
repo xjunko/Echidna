@@ -3,14 +3,15 @@ module sample
 import beatrice.app
 import beatrice.engine
 import beatrice.engine.renderer
-import beatrice.util.math.vector
 import beatrice.drawable.sprite
+import beatrice.engine.resource
+import beatrice.util.math.vector
 
 pub struct SampleApplication {
 	app.Application
 mut:
-	manager &sprite.Manager = unsafe { nil }
-	spr     &sprite.Sprite  = unsafe { nil }
+	manager &sprite.Manager        = unsafe { nil }
+	atlas   &resource.TextureAtlas = unsafe { nil }
 
 	last_delta f64
 }
@@ -26,36 +27,21 @@ pub fn SampleApplication.create(mut c_engine engine.Engine) &SampleApplication {
 }
 
 pub fn (mut sample_app SampleApplication) initialize() {
+	sample_app.atlas = sample_app.engine.resources.create_atlas(1024, 1024)
 	sample_app.manager = sprite.new_manager()
-
-	sample_app.spr = &sprite.Sprite{
-		textures:       [
-			sample_app.c_engine.resource_manager.load_image('assets/images/teto.png',
-				'teto'),
-		]
-		always_visible: true
-	}
-
-	sample_app.spr.position.x = 640
-	sample_app.spr.position.y = 360
-
-	sample_app.spr.reset_size_based_on_texture()
-	sample_app.spr.reset_attributes_based_on_transforms()
-
-	sample_app.manager.add(mut sample_app.spr)
 }
 
 pub fn (mut sample_app SampleApplication) update() {
-	sample_app.manager.update(sample_app.c_engine.time.time)
+	sample_app.atlas.update()
+	sample_app.manager.update(sample_app.engine.time.time)
 }
 
 pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) {
 	graphics.set_color(r: 25, g: 25, b: 25)
 
-	// Rotating rect
-	// TODO
+	sample_app.manager.draw(mut graphics)
 
-	font := sample_app.c_engine.resource_manager.get_font('Default')
+	font := sample_app.engine.resources.get_font('Default')
 
 	graphics.draw_text(font,
 		text:     'Title'
@@ -96,7 +82,7 @@ pub fn (mut sample_app SampleApplication) draw(mut graphics renderer.IRenderer) 
 }
 
 pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRenderer) {
-	delta_t := sample_app.c_engine.time.delta
+	delta_t := sample_app.engine.time.delta
 	sample_app.last_delta = (sample_app.last_delta * 0.9) + (delta_t * 0.1)
 	fps := 1000.0 / sample_app.last_delta
 
@@ -104,7 +90,7 @@ pub fn (mut sample_app SampleApplication) draw_fps(mut graphics renderer.IRender
 	ms_string := '${sample_app.last_delta:.1f} ms'
 
 	{
-		mut font := sample_app.c_engine.resource_manager.get_font('Default')
+		mut font := sample_app.engine.resources.get_font('Default')
 		mut color := renderer.Color.from_rgb[u8](255, 255, 255)
 
 		if fps < 120 {
