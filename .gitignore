@@ -41,3 +41,4 @@ src/beatrice/graphic/export/*
 .fuse_*
 
 src/beatrice/app/kyukurarin
+src/beatrice/app/kyu*
