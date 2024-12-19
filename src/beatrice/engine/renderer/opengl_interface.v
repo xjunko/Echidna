@@ -1,6 +1,7 @@
 module renderer
 
 import sdl
+import stbi
 import thirdparty.sokol.sgl
 import thirdparty.sokol.gfx
 import beatrice.util.math.vector
@@ -54,6 +55,9 @@ mut:
 	common_img_sampler gfx.Sampler
 
 	resolution vector.Vector2[int]
+
+	atlas &resource.TextureAtlas = unsafe { nil }
+	cache map[string]&OpenGLImage
 }
 
 pub fn glue_environment() gfx.Environment {
@@ -81,7 +85,7 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	// setup sokol-gfx
 	desc := gfx.Desc{
 		environment:     glue_environment()
-		image_pool_size: 256 // increase this if youre expecting to load a lot of images
+		image_pool_size: 128 // increase this if youre expecting to load a lot of images
 	}
 
 	gfx.setup(&desc)
@@ -111,6 +115,9 @@ pub fn (mut gl_graphic OpenGLGraphic) initialize() {
 	}
 
 	gl_graphic.common_img_sampler = gfx.make_sampler(&sampler_desc)
+
+	// atlas
+	gl_graphic.atlas = resource.TextureAtlas.create(1024 * 8, 1024 * 4)
 }
 
 pub fn OpenGLGraphic.create(window &sdl.Window) &OpenGLGraphic {
@@ -124,6 +131,10 @@ pub fn OpenGLGraphic.create(window &sdl.Window) &OpenGLGraphic {
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) begin() {
+	{
+		gl_graphic.atlas.update() // This might incure some performance cost
+	}
+
 	sdl.get_window_size(gl_graphic.window, &gl_graphic.resolution.x, &gl_graphic.resolution.y)
 	gl_graphic.pass.swapchain.width = gl_graphic.resolution.x
 	gl_graphic.pass.swapchain.height = gl_graphic.resolution.y
@@ -223,7 +234,23 @@ pub fn (mut gl_graphic OpenGLGraphic) draw_rect(position vector.Vector2[f64], si
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) create_image(path string, mipmapped bool, keep_in_mem bool) &resource.Image {
-	return OpenGLImage.create_from_path(path, mipmapped, keep_in_mem)
+	if path !in gl_graphic.cache {
+		// Add the image into the sprite atlas if its small
+		mut tmp_image := stbi.load(path) or { panic(err) }
+
+		if tmp_image.width <= 1024 && tmp_image.height <= 1024 {
+			// Add the image into the atlas
+			entry := gl_graphic.atlas.add_texture_from_stbi(&tmp_image)
+			mut atlas_image := OpenGLImage.create_from_atlas(entry, gl_graphic.atlas)
+			gl_graphic.cache[path] = atlas_image
+		} else {
+			tmp_image.free()
+			mut new_image := OpenGLImage.create_from_path(path, mipmapped, keep_in_mem)
+			gl_graphic.cache[path] = new_image
+		}
+	}
+
+	return gl_graphic.cache[path] or { panic('Image not found') }
 }
 
 pub fn (mut gl_graphic OpenGLGraphic) create_image_from_size(size vector.Vector2[int], mipmapped bool, keep_in_mem bool) &resource.Image {

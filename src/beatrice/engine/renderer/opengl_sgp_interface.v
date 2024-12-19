@@ -2,7 +2,6 @@ module renderer
 
 import sdl
 import thirdparty.sokol.sgl
-import thirdparty.sokol.gfx
 import thirdparty.sokol.gp
 import beatrice.util.math.vector
 import beatrice.engine.font
