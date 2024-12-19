@@ -18,7 +18,9 @@ pub mut:
 pub struct TextureAtlas {
 	Resource
 mut:
-	last_y_offset int
+	last_x_offset   int
+	last_y_offset   int
+	last_row_height int
 pub mut:
 	name  string
 	atlas gfx.Image
@@ -52,6 +54,8 @@ pub fn (mut atlas TextureAtlas) update() {
 		}
 
 		gfx.update_image(atlas.atlas, &data)
+
+		atlas.changed = false
 	}
 }
 
@@ -59,12 +63,23 @@ pub fn (mut atlas TextureAtlas) update() {
 pub fn (mut atlas TextureAtlas) add_texture_from_file(path string) &AtlasEntry {
 	stb_img := stbi.load(path) or { panic(err) }
 
-	y_offset := atlas.last_y_offset
+	mut x_offset := atlas.last_x_offset
+	mut y_offset := atlas.last_y_offset
+
+	if x_offset + stb_img.width > atlas.width {
+		x_offset = 0
+		y_offset += atlas.last_row_height
+		atlas.last_row_height = 0
+	}
+
+	if stb_img.height > atlas.last_row_height {
+		atlas.last_row_height = stb_img.height
+	}
 
 	mut atlas_entry := &AtlasEntry{
 		width:    stb_img.width
 		height:   stb_img.height
-		x_offset: 0
+		x_offset: x_offset
 		y_offset: y_offset
 		atlas:    unsafe { &atlas }
 	}
@@ -72,7 +87,7 @@ pub fn (mut atlas TextureAtlas) add_texture_from_file(path string) &AtlasEntry {
 	atlas.textures << unsafe { atlas_entry }
 
 	for y := 0; y < stb_img.height; y++ {
-		atlas_row_offset := (y + y_offset) * atlas.width * 4
+		atlas_row_offset := (y + y_offset) * atlas.width * 4 + x_offset * 4 // Use x_offset to shift horizontally
 		stb_row_offset := y * stb_img.width * 4
 
 		unsafe {
@@ -81,7 +96,52 @@ pub fn (mut atlas TextureAtlas) add_texture_from_file(path string) &AtlasEntry {
 		}
 	}
 
-	atlas.last_y_offset += stb_img.height
+	atlas.last_x_offset = x_offset + stb_img.width
+	atlas.last_y_offset = y_offset
+
+	atlas.changed = true
+	stb_img.free()
+
+	return atlas_entry
+}
+
+pub fn (mut atlas TextureAtlas) add_texture_from_stbi(stb_img &stbi.Image) &AtlasEntry {
+	mut x_offset := atlas.last_x_offset
+	mut y_offset := atlas.last_y_offset
+
+	if x_offset + stb_img.width > atlas.width {
+		x_offset = 0
+		y_offset += atlas.last_row_height
+		atlas.last_row_height = 0
+	}
+
+	if stb_img.height > atlas.last_row_height {
+		atlas.last_row_height = stb_img.height
+	}
+
+	mut atlas_entry := &AtlasEntry{
+		width:    stb_img.width
+		height:   stb_img.height
+		x_offset: x_offset
+		y_offset: y_offset
+		atlas:    unsafe { &atlas }
+	}
+
+	atlas.textures << unsafe { atlas_entry }
+
+	for y := 0; y < stb_img.height; y++ {
+		atlas_row_offset := (y + y_offset) * atlas.width * 4 + x_offset * 4 // Use x_offset to shift horizontally
+		stb_row_offset := y * stb_img.width * 4
+
+		unsafe {
+			C.memcpy(&u8(atlas.data.data) + atlas_row_offset, stb_img.data + stb_row_offset,
+				stb_img.width * 4)
+		}
+	}
+
+	atlas.last_x_offset = x_offset + stb_img.width
+	atlas.last_y_offset = y_offset
+
 	atlas.changed = true
 	stb_img.free()
 
