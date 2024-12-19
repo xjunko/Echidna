@@ -27,10 +27,6 @@ pub mut:
 pub fn (mut font Font) initialize() {
 	font_bytes := os.read_bytes(font.path) or { panic(err) }
 	font.id = font.fons.add_font_mem(font.name, font_bytes, true)
-
-	unsafe {
-		font_bytes.free()
-	}
 }
 
 pub fn (mut font Font) flush() {
