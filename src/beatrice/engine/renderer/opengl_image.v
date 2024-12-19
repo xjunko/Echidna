@@ -44,12 +44,13 @@ pub fn OpenGLImage.create_from_buffer(buffer &u8, width int, height int, channel
 }
 
 pub fn OpenGLImage.create_from_path(path string, mipmapped bool, keep_in_mem bool) &OpenGLImage {
-	mut img_res := resource.ImageResource.create(path, mipmapped, keep_in_mem)
-
 	stb_img := stbi.load(path) or { panic(err) }
 
 	mut img := OpenGLImage.create_from_buffer(stb_img.data, stb_img.width, stb_img.height,
 		stb_img.nr_channels)
+
+	img.mipmapped = mipmapped
+	img.keep_in_mem = keep_in_mem
 
 	stb_img.free()
 
